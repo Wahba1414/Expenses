@@ -1,0 +1,24 @@
+> App Overview.
+This app contains many screens as follows:
+
+1-Home.
+contains all expenses as list. each item contains this info. (title, amount, day, category)
+
+contains a modal to can add a new expenses.
+
+2-Categories.
+contains all categories i care about.
+
+3-Charts.
+to analyize and display every category expenses.
+
+>> Using SQlite for saving persistent data.
+
+
+
+
+> First release.
+1-Home screen. with persistent data.
+
+> Second release.
+1-Charts.
