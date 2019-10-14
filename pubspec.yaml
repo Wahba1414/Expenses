@@ -21,8 +21,8 @@ dependencies:
     sdk: flutter
   intl: ^0.16.0
   uuid: 2.0.1
-  sqflite:
-  path:
+  sqflite: ^0.12.2+1
+  path_provider: ^0.4.1
 
 
 
