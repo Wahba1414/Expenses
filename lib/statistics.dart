@@ -49,7 +49,7 @@ class _StatisticsState extends State<Statistics> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'Total',
                     style: TextStyle(
                       color: Colors.white,

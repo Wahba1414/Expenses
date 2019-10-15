@@ -18,7 +18,7 @@ class Top extends StatelessWidget {
         primaryColor: Colors.blue[300],
         accentColor: Colors.black87,
         textTheme: TextTheme(
-          title: TextStyle(
+          title: const TextStyle(
             color: Colors.white,
             fontSize: 20,
           ),

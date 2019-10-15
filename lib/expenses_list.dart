@@ -38,7 +38,7 @@ class ExpensesList extends StatelessWidget {
               width: MediaQuery.of(context).size.width * .05,
               child: FlatButton(
                 padding: EdgeInsets.only(right: 0),
-                child: Icon(
+                child: const Icon(
                   Icons.delete,
                   color: Colors.red,
                 ),

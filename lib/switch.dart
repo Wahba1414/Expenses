@@ -6,7 +6,7 @@ class CustomSwitch extends StatelessWidget {
   final switchValue;
   final Function switchOnChanged;
 
-  CustomSwitch(this.switchText, this.switchValue, this.switchOnChanged);
+  const CustomSwitch(this.switchText, this.switchValue, this.switchOnChanged);
 
   @override
   Widget build(BuildContext context) {
