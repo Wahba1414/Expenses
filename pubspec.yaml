@@ -23,6 +23,8 @@ dependencies:
   uuid: 2.0.1
   sqflite: ^0.12.2+1
   path_provider: ^0.4.1
+  
+
 
 
 
@@ -33,7 +35,12 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.7.3"  
 
+flutter_icons:
+  android: true 
+  ios: true
+  image_path: "assets/icons/credit-card.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -41,7 +41,7 @@ class Top extends StatelessWidget {
 }
 
 class MyApp extends StatefulWidget {
-  final _categories = ['Personal', 'Shopping', 'Outings', 'Love', 'Home', 'Family', 'Others' , 'Gym'];
+  final _categories = ['Personal', 'Shopping', 'Outings', 'Love', 'Home', 'Family', 'Food' , 'Gym' , 'Others'];
 
   @override
   _MyAppState createState() => _MyAppState();
