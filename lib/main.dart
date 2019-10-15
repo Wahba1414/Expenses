@@ -1,14 +1,42 @@
 import 'package:flutter/material.dart';
 
 import './home.dart';
+import './new_expenses.dart';
 
 // db.
 import './utilis/db.dart';
 import './models/expenses.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(Top());
+
+class Top extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+          primaryColor: Colors.blue[300],
+          accentColor: Colors.white,
+          textTheme: TextTheme(
+            body1: TextStyle(
+              color: Colors.blue[400],
+              fontSize: 18,
+            ),
+          ),
+          buttonTheme: ButtonThemeData(
+            textTheme: ButtonTextTheme.normal,
+
+            buttonColor: Colors.blueAccent[100],
+            // colorScheme: ColorScheme.dark(),
+          )),
+      home: MyApp(),
+    );
+  }
+}
 
 class MyApp extends StatefulWidget {
+  final _categories = ['Personal', 'Shopping', 'Outings', 'Love'];
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -18,41 +46,66 @@ class _MyAppState extends State<MyApp> {
     setState(() {});
   }
 
-  final AppBar appBar = AppBar(
-    title: Text('Expenses'),
-  );
+  // Function opens a bottom modal.
+  void _startAddNewExpenses() {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return NewExpenses(_selectDate, widget._categories, addNewExpenses);
+        });
+  }
+
+  // Open date picker.
+  Future<DateTime> _selectDate() {
+    return showDatePicker(
+        context: context,
+        initialDate: new DateTime.now(),
+        firstDate: DateTime(DateTime.now().year, 1),
+        lastDate: new DateTime.now());
+  }
+
+  void addNewExpenses(Expenses newItem) async {
+    // if (newItem.title && newItem.amount && newItem.category && newItem.date) {
+    // widget.listItems.add(newItem);
+    await DBProvider.db.newExpenses(newItem);
+    reload();
+    // }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-          primaryColor: Colors.blue[300],
-          accentColor: Colors.blueAccent,
-          textTheme: TextTheme(
-            body1: TextStyle(
-              color: Colors.blue[400],
-              fontSize: 18,
-            ),
+    final AppBar appBar = AppBar(
+      title: Text('Expenses'),
+      actions: <Widget>[
+        FlatButton(
+          child: Icon(
+            Icons.add,
+            color: Theme.of(context).accentColor,
+            size: 30,
           ),
-          buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary)),
-      home: Scaffold(
-        appBar: appBar,
-        body: FutureBuilder<List<Expenses>>(
-            future: DBProvider.db.getAllExpenses(),
-            builder: (
-              BuildContext context,
-              AsyncSnapshot<List<Expenses>> snapshot,
-            ) {
-              print("snapshot.data");
-              print(snapshot.data);
-              return Container(
-                // height:
-                //     (MediaQuery.of(context).size.height - appBar.preferredSize.height) * .5,
-                child: Home(
-                    appBar.preferredSize.height, snapshot.data ?? [], reload),
-              );
-            }),
-      ),
+          onPressed: _startAddNewExpenses,
+          // color: Colors.red,
+        )
+      ],
+    );
+
+    return Scaffold(
+      appBar: appBar,
+      body: FutureBuilder<List<Expenses>>(
+          future: DBProvider.db.getAllExpenses(),
+          builder: (
+            BuildContext context,
+            AsyncSnapshot<List<Expenses>> snapshot,
+          ) {
+            print("snapshot.data");
+            print(snapshot.data);
+            return Container(
+              // height:
+              //     (MediaQuery.of(context).size.height - appBar.preferredSize.height) * .5,
+              child: Home(
+                  appBar.preferredSize.height, snapshot.data ?? [], reload),
+            );
+          }),
     );
   }
 }

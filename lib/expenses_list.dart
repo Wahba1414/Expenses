@@ -18,6 +18,8 @@ class ExpensesList extends StatelessWidget {
         itemBuilder: (context, index) {
           return (ListTile(
             leading: CircleAvatar(
+              backgroundColor: Theme.of(context).primaryColor,
+              foregroundColor: Theme.of(context).accentColor,
               radius: 30,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

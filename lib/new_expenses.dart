@@ -70,7 +70,7 @@ class _NewExpensesState extends State<NewExpenses> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Text((selectedDate == null)
-                    ? 'No Date is chosen'
+                    ? 'No date is chosen'
                     : (DateFormat.yMMMMd().format(selectedDate))),
                 FlatButton(
                   child: Text('Pick up a date'),
@@ -92,7 +92,7 @@ class _NewExpensesState extends State<NewExpenses> {
                     date: selectedDate,
                     category: selectedCategory,
                   );
-                  
+
                   // Expenses newItem = {
                   //   'title': titleController.text,
                   //   'amount': amountController.text,
