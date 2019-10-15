@@ -15,27 +15,33 @@ class Top extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primaryColor: Colors.blue[300],
-          accentColor: Colors.white,
-          textTheme: TextTheme(
-            body1: TextStyle(
-              color: Colors.blue[400],
-              fontSize: 18,
-            ),
+        primaryColor: Colors.blue[300],
+        accentColor: Colors.black87,
+        textTheme: TextTheme(
+          title: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
           ),
-          buttonTheme: ButtonThemeData(
-            textTheme: ButtonTextTheme.normal,
+          body1: TextStyle(
+            color: Colors.blue[400],
+            fontSize: 18,
+          ),
+        ),
+        buttonTheme: ButtonThemeData(
+          textTheme: ButtonTextTheme.normal,
 
-            buttonColor: Colors.blueAccent[100],
-            // colorScheme: ColorScheme.dark(),
-          )),
+          buttonColor: Colors.blueAccent[100],
+          // colorScheme: ColorScheme.dark(),
+        ),
+        backgroundColor: Colors.indigo[200],
+      ),
       home: MyApp(),
     );
   }
 }
 
 class MyApp extends StatefulWidget {
-  final _categories = ['Personal', 'Shopping', 'Outings', 'Love'];
+  final _categories = ['Personal', 'Shopping', 'Outings', 'Love', 'Home', 'Family', 'Others' , 'Gym'];
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -102,8 +108,8 @@ class _MyAppState extends State<MyApp> {
             return Container(
               // height:
               //     (MediaQuery.of(context).size.height - appBar.preferredSize.height) * .5,
-              child: Home(
-                  appBar.preferredSize.height, snapshot.data ?? [], reload),
+              child: Home(appBar.preferredSize.height, snapshot.data ?? [],
+                  reload, widget._categories),
             );
           }),
     );

@@ -22,6 +22,7 @@ class CustomSwitch extends StatelessWidget {
               switchText,
             ),
             Switch(
+              activeColor: Theme.of(context).primaryColor,
               value: switchValue,
               onChanged: switchOnChanged,
             ),

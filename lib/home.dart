@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import './switch.dart';
@@ -8,22 +7,25 @@ import './empty_list.dart';
 // models.
 import './utilis/db.dart';
 import './models/expenses.dart';
+import './statistics.dart';
 
 class Home extends StatefulWidget {
-  
   final List<Expenses> listItems;
   final Function reload;
+  final _categories;
 
   final appBarHeight;
   final statusBarHeight = 24;
 
-  Home(this.appBarHeight, this.listItems, this.reload);
+  Home(this.appBarHeight, this.listItems, this.reload, this._categories);
 
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  bool showStatistics = false;
+
   void addNewExpenses(Expenses newItem) async {
     // if (newItem.title && newItem.amount && newItem.category && newItem.date) {
     // widget.listItems.add(newItem);
@@ -41,8 +43,6 @@ class _HomeState extends State<Home> {
     widget.reload();
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,34 +56,36 @@ class _HomeState extends State<Home> {
                   .1,
               child: CustomSwitch(
                 'Statistics',
-                false,
-                (_) {},
+                showStatistics,
+                (_value) {
+                  setState(() {
+                    // print('_value');
+                    // print(_value);
+                    showStatistics = _value;
+                  });
+                },
               ),
             ),
-            // Container(
-            //   child: Text('Chart'),
-            // ),
-
-            Container(
-              height: (MediaQuery.of(context).size.height -
-                      widget.appBarHeight -
-                      widget.statusBarHeight) *
-                  .9,
-              child: Stack(children: <Widget>[
-                Container(
-                  child: (widget.listItems.length > 0)
-                      ? ExpensesList(widget.listItems, removeExpenses)
-                      : EmptyList(),
-                ),
-                // Align(
-                //   alignment: Alignment.bottomRight,
-                //   child: FloatingActionButton(
-                //     child: Icon(Icons.add),
-                //     onPressed: _startAddNewExpenses,
-                //   ),
-                // ),
-              ]),
-            )
+            ((showStatistics)
+                ? Container(
+                    // height: 30,
+                    height: (MediaQuery.of(context).size.height -
+                            widget.appBarHeight -
+                            widget.statusBarHeight) *
+                        .9,
+                    child: Statistics(widget.listItems, widget._categories),
+                  )
+                : Container(
+                    height: (MediaQuery.of(context).size.height -
+                            widget.appBarHeight -
+                            widget.statusBarHeight) *
+                        .9,
+                    child: Container(
+                      child: (widget.listItems.length > 0)
+                          ? ExpensesList(widget.listItems, removeExpenses)
+                          : EmptyList(),
+                    ),
+                  ))
           ],
         ),
       ),
