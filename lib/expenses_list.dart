@@ -8,10 +8,10 @@ import 'package:intl/intl.dart';
 class ExpensesList extends StatelessWidget {
   // List of possible colors for Avatar.
   final List<Color> colors = [
-    Colors.pink[200],
-    Colors.pink[100],
-    Colors.red[100],
-    Colors.purple[100],
+    Colors.indigo[100],
+    Colors.indigo[200],
+    Colors.indigo[300],
+    Colors.indigo[400],
   ];
   final listItems;
   final removeItem;

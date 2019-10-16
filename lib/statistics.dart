@@ -43,44 +43,87 @@ class _StatisticsState extends State<Statistics> {
         child: Column(
           children: <Widget>[
             Container(
-              color: Theme.of(context).backgroundColor,
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
               height: constraints.maxHeight * .1,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  const Text(
-                    'Total',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
+              child: Card(
+                color: Theme.of(context).backgroundColor,
+                elevation: 15,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Icon(
+                      Icons.attach_money,
+                      color: Theme.of(context).primaryColorLight,
                     ),
-                  ),
-                  Text(totalExpenses.toString(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                      ))
-                ],
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'Total',
+                      style: TextStyle(color: Theme.of(context).primaryColorLight),
+                    ),
+                    Spacer(
+                      flex: 2,
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(
+                        right: 10,
+                      ),
+                      child: FittedBox(
+                        child: Text(
+                          totalExpenses.toString(),
+                          style: TextStyle(color: Theme.of(context).primaryColorLight),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
+
+            // List of details for different categories.
             Container(
               height: constraints.maxHeight * .9,
               child: ListView.builder(
                   itemCount: widget.categories.length,
                   itemBuilder: (context, index) {
-                    return (ListTile(
-                      leading: Icon(
-                        Icons.star,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      title: Text(widget.categories[index]),
-                      trailing: FittedBox(
-                        child: Text(
-                          '${statistics[widget.categories[index]]}',
+                    return Container(
+                      height: constraints.maxHeight * .1,
+                      child: Card(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Icon(
+                              Icons.star,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(widget.categories[index]),
+                            Spacer(
+                              flex: 2,
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(
+                                right: 10,
+                              ),
+                              child: FittedBox(
+                                  child: Text(
+                                '${statistics[widget.categories[index]]}',
+                              )),
+                            )
+                          ],
+                        ),
+                        color: Colors.white,
+                        elevation: 10,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
                         ),
                       ),
-                    ));
+                    );
                   }),
             ),
           ],

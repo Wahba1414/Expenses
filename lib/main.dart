@@ -17,6 +17,7 @@ class Top extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.blue[300],
         accentColor: Colors.black87,
+        primaryColorLight: Colors.white,
         textTheme: TextTheme(
           title: const TextStyle(
             color: Colors.white,
@@ -33,7 +34,7 @@ class Top extends StatelessWidget {
           buttonColor: Colors.blueAccent[100],
           // colorScheme: ColorScheme.dark(),
         ),
-        backgroundColor: Colors.indigo[200],
+        backgroundColor: Colors.indigo[300],
       ),
       home: MyApp(),
     );
@@ -101,12 +102,17 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final AppBar appBar = AppBar(
-      title: Text('Expenses'),
+      title: Text(
+        'Expenses',
+        style: TextStyle(
+          color: Theme.of(context).primaryColorLight,
+        ),
+      ),
       actions: <Widget>[
         FlatButton(
           child: Icon(
             Icons.add,
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).primaryColorLight,
             size: 30,
           ),
           onPressed: _startAddNewExpenses,
@@ -123,8 +129,8 @@ class _MyAppState extends State<MyApp> {
             BuildContext context,
             AsyncSnapshot<List<Expenses>> snapshot,
           ) {
-            print("snapshot.data");
-            print(snapshot.data);
+            // print("snapshot.data");
+            // print(snapshot.data);
             return Container(
               // height:
               //     (MediaQuery.of(context).size.height - appBar.preferredSize.height) * .5,
