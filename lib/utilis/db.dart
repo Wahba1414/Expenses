@@ -57,8 +57,8 @@ class DBProvider {
     final db = await database;
     var res = await db.query("Expenses");
     // temporary.
-    print('results from db');
-    print(res);
+    // print('results from db');
+    // print(res);
     List<Expenses> list =
         res.isNotEmpty ? res.map((c) => Expenses.fromMap(c)).toList() : [];
     return list;
