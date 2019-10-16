@@ -1,9 +1,18 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 // import './models/expenses.dart';
 
 class ExpensesList extends StatelessWidget {
+  // List of possible colors for Avatar.
+  final List<Color> colors = [
+    Colors.blue[50],
+    Colors.blue[200],
+    Colors.blue[400],
+    Colors.blue[600],
+  ];
   final listItems;
   final removeItem;
 
@@ -12,13 +21,18 @@ class ExpensesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(
+        top: 12,
+      ),
       // width: MediaQuery.of(context).size.width,
       child: ListView.builder(
         itemCount: listItems.length,
         itemBuilder: (context, index) {
           return (ListTile(
+            key: ValueKey(listItems[index].id),
             leading: CircleAvatar(
-              backgroundColor: Theme.of(context).primaryColor,
+              // backgroundColor: Theme.of(context).primaryColor,
+              backgroundColor: colors[Random().nextInt(4)],
               foregroundColor: Theme.of(context).accentColor,
               radius: 30,
               child: Padding(

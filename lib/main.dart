@@ -41,13 +41,26 @@ class Top extends StatelessWidget {
 }
 
 class MyApp extends StatefulWidget {
-  final _categories = ['Personal', 'Shopping', 'Outings', 'Love', 'Home', 'Family', 'Food' , 'Gym' , 'Others'];
+  final _categories = [
+    'Personal',
+    'Shopping',
+    'Outings',
+    'Love',
+    'Home',
+    'Family',
+    'Food',
+    'Gym',
+    'Others'
+  ];
 
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
+  // holds the tab index.
+  int tabIndex = 0;
+
   void reload() {
     setState(() {});
   }
@@ -76,6 +89,13 @@ class _MyAppState extends State<MyApp> {
     await DBProvider.db.newExpenses(newItem);
     reload();
     // }
+  }
+
+  void _selectTap(int index) {
+    print('index: $index');
+    setState(() {
+      tabIndex = index;
+    });
   }
 
   @override
@@ -108,10 +128,30 @@ class _MyAppState extends State<MyApp> {
             return Container(
               // height:
               //     (MediaQuery.of(context).size.height - appBar.preferredSize.height) * .5,
-              child: Home(appBar.preferredSize.height, snapshot.data ?? [],
-                  reload, widget._categories),
+              child: Home(
+                appBar.preferredSize.height + kBottomNavigationBarHeight,
+                snapshot.data ?? [],
+                reload,
+                widget._categories,
+                tabIndex,
+              ),
             );
           }),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu),
+            title: Text('List'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star),
+            title: Text('Statistics'),
+          )
+        ],
+        onTap: _selectTap,
+        selectedItemColor: Theme.of(context).primaryColor,
+        currentIndex: tabIndex,
+      ),
     );
   }
 }
