@@ -48,6 +48,10 @@ class _HomeState extends State<Home> {
     await DBProvider.db.deleteExpenses(id);
     widget.reload();
 
+    // Assure remove any previous snakbars.
+    Scaffold.of(context).removeCurrentSnackBar();
+
+    // Show a new one.
     Scaffold.of(context).showSnackBar(SnackBar(
       duration: Duration(
         seconds: 5,
