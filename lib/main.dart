@@ -15,6 +15,7 @@ class Top extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: 'Monotserrat',
         primaryColor: Colors.blue[300],
         accentColor: Colors.black87,
         primaryColorLight: Colors.white,
@@ -136,7 +137,7 @@ class _MyAppState extends State<MyApp> {
               // height:
               //     (MediaQuery.of(context).size.height - appBar.preferredSize.height) * .5,
               child: Home(
-                appBar.preferredSize.height + kBottomNavigationBarHeight,
+                appBar.preferredSize.height + kBottomNavigationBarHeight + 5,
                 snapshot.data ?? [],
                 reload,
                 widget._categories,
