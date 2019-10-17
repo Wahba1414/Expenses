@@ -26,7 +26,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  bool showStatistics = false;
+  // Will keep it here for undo functionality.
+  Expenses removedItem;
 
   void addNewExpenses(Expenses newItem) async {
     // if (newItem.title && newItem.amount && newItem.category && newItem.date) {
@@ -37,6 +38,9 @@ class _HomeState extends State<Home> {
   }
 
   void removeExpenses(var id) async {
+    // Get the removed item.
+    removedItem = widget.listItems.firstWhere((item) => item.id == id);
+
     setState(() {
       widget.listItems.removeWhere((item) => item.id == id);
     });
@@ -44,7 +48,20 @@ class _HomeState extends State<Home> {
     await DBProvider.db.deleteExpenses(id);
     widget.reload();
 
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text("Item removed")));
+    Scaffold.of(context).showSnackBar(SnackBar(
+      duration: Duration(
+        seconds: 5,
+      ),
+      backgroundColor: Theme.of(context).backgroundColor,
+      content: Text("Item removed"),
+      action: SnackBarAction(
+        label: 'Undo',
+        textColor: Theme.of(context).primaryColorLight,
+        onPressed: () {
+          addNewExpenses(removedItem);
+        },
+      ),
+    ));
   }
 
   @override
