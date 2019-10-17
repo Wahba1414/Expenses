@@ -53,7 +53,7 @@ class _StatisticsState extends State<Statistics> {
               height: constraints.maxHeight * .1,
               child: Card(
                 color: Theme.of(context).backgroundColor,
-                elevation: 15,
+                elevation: 10,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                 ),
@@ -134,7 +134,7 @@ class _StatisticsState extends State<Statistics> {
                           ),
                         ),
                         color: Colors.white,
-                        elevation: 10,
+                        elevation: 5,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),

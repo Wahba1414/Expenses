@@ -88,6 +88,11 @@ flutter:
       fonts:
         - asset: assets/fonts/OpenSansCondensed-Light.ttf
           style: normal
+          weight: 900
+    - family: Hind
+      fonts:
+        - asset: assets/fonts/Hind-Regular.ttf
+          style: normal
           weight: 700            
   #   - family: Trajan Pro
   #     fonts:

@@ -16,8 +16,9 @@ class Top extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // fontFamily: 'Monotserrat',
-        fontFamily: 'RobotoMono',
+        // fontFamily: 'RobotoMono',
         // fontFamily: 'OpenSans',
+        fontFamily: 'Hind',
         primaryColor: Colors.blue[300],
         accentColor: Colors.black87,
         primaryColorLight: Colors.white,
@@ -139,7 +140,7 @@ class _MyAppState extends State<MyApp> {
               // height:
               //     (MediaQuery.of(context).size.height - appBar.preferredSize.height) * .5,
               child: Home(
-                appBar.preferredSize.height + kBottomNavigationBarHeight + 5,
+                appBar.preferredSize.height + kBottomNavigationBarHeight + 6,
                 snapshot.data ?? [],
                 reload,
                 widget._categories,
