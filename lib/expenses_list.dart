@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 
 // import './models/expenses.dart';
 
@@ -18,6 +19,11 @@ class ExpensesList extends StatelessWidget {
 
   ExpensesList(this.listItems, this.removeItem);
 
+  // Format money texts.
+  formatMoney(value) {
+    return FlutterMoneyFormatter(amount: value).output.withoutFractionDigits;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,16 +35,11 @@ class ExpensesList extends StatelessWidget {
         itemCount: listItems.length,
         itemBuilder: (context, index) {
           return Dismissible(
+            key: Key(listItems[index].id),
             background: Container(
-              // child: Align(
-              //   child: Icon(
-              //     Icons.delete,
-              //     color: Colors.white,
-              //   ),
-              // ),
+              // width: 10,
               color: Colors.red,
             ),
-            key: Key(listItems[index].id),
             onDismissed: (_) {
               removeItem(listItems[index].id);
             },
@@ -52,7 +53,9 @@ class ExpensesList extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: FittedBox(
-                    child: Text(listItems[index].amount),
+                    child: Text(
+                      formatMoney(double.parse(listItems[index].amount)),
+                    ),
                   ),
                 ),
               ),

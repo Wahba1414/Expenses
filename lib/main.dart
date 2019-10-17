@@ -122,6 +122,7 @@ class _MyAppState extends State<MyApp> {
     );
 
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: appBar,
       body: FutureBuilder<List<Expenses>>(
           future: DBProvider.db.getAllExpenses(),

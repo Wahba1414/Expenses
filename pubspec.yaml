@@ -19,10 +19,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  intl: ^0.16.0
+  intl: ^0.15.8
   uuid: 2.0.1
   sqflite: ^0.12.2+1
   path_provider: ^0.4.1
+  flutter_money_formatter: ^0.8.3
+
   
 
 
