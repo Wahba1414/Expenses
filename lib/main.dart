@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import './home.dart';
-import './new_expenses.dart';
+// import './new_expenses.dart';
+import './new_expenses_form.dart';
 
 // db.
 import './utilis/db.dart';
@@ -75,7 +76,8 @@ class _MyAppState extends State<MyApp> {
     showModalBottomSheet(
         context: context,
         builder: (builder) {
-          return NewExpenses(_selectDate, widget._categories, addNewExpenses);
+          // return NewExpenses(_selectDate, widget._categories, addNewExpenses);
+          return NewExpensesForm(_selectDate, widget._categories, addNewExpenses);
         });
   }
 
@@ -88,11 +90,12 @@ class _MyAppState extends State<MyApp> {
         lastDate: new DateTime.now());
   }
 
-  void addNewExpenses(Expenses newItem) async {
+  Future<bool> addNewExpenses(Expenses newItem) async {
     // if (newItem.title && newItem.amount && newItem.category && newItem.date) {
     // widget.listItems.add(newItem);
     await DBProvider.db.newExpenses(newItem);
     reload();
+    return true;
     // }
   }
 

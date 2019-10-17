@@ -13,4 +13,12 @@ class Expenses {
       amount: json["amount"],
       category: json["category"],
       date: DateTime.parse(json["date"]));
+
+  log() {
+    print('id: $id');
+    print('title: $title');
+    print('amount: $amount');
+    print('category: $category');
+    print('date: $date');
+  }
 }

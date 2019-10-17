@@ -5,7 +5,7 @@ class EmptyList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: const Text(
-        'No Transactions added yet !!',
+        'No transactions added.',
         style: TextStyle(
           fontSize: 20,
         ),
