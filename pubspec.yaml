@@ -77,6 +77,18 @@ flutter:
         - asset: assets/fonts/Montserrat-Light.ttf
         - asset: assets/fonts/Montserrat-Thin.ttf
           style: normal
+          weight: 700
+    - family: RobotoMono
+      fonts:
+        - asset: assets/fonts/RobotoMono-Light.ttf
+        - asset: assets/fonts/RobotoMono-Thin.ttf
+          style: normal
+          weight: 700 
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/OpenSansCondensed-Light.ttf
+          style: normal
+          weight: 700            
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
