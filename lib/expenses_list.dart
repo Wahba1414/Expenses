@@ -13,6 +13,10 @@ class ExpensesList extends StatelessWidget {
     Colors.indigo[200],
     Colors.indigo[300],
     Colors.indigo[400],
+    Colors.blue[100],
+    Colors.blue[200],
+    Colors.blue[300],
+    Colors.blue[400],
   ];
   final listItems;
   final removeItem;
@@ -34,6 +38,7 @@ class ExpensesList extends StatelessWidget {
       child: ListView.builder(
         itemCount: listItems.length,
         itemBuilder: (context, index) {
+          final colorScheme = colors[Random().nextInt(8)];
           return Dismissible(
             key: Key(listItems[index].id),
             background: Container(
@@ -47,7 +52,7 @@ class ExpensesList extends StatelessWidget {
               // key: ValueKey(listItems[index].id),
               leading: CircleAvatar(
                 // backgroundColor: Theme.of(context).primaryColor,
-                backgroundColor: colors[Random().nextInt(4)],
+                backgroundColor: colorScheme,
                 foregroundColor: Theme.of(context).accentColor,
                 radius: 30,
                 child: Padding(
@@ -69,7 +74,7 @@ class ExpensesList extends StatelessWidget {
                 child: Icon(
                   Icons.mood,
                   size: 40,
-                  color: colors[Random().nextInt(4)],
+                  color: colorScheme,
                 ),
               ),
             )),
