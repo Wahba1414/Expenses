@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import './home.dart';
-// import './new_expenses.dart';
 import './new_expenses_form.dart';
+import './drawer.dart';
+import './category_list.dart';
 
 // db.
 import './utilis/db.dart';
@@ -23,6 +24,7 @@ class Top extends StatelessWidget {
         primaryColor: Colors.blue[300],
         accentColor: Colors.black87,
         primaryColorLight: Colors.white,
+        primaryColorDark: Colors.black,
         textTheme: TextTheme(
           title: const TextStyle(
             color: Colors.white,
@@ -42,6 +44,13 @@ class Top extends StatelessWidget {
         backgroundColor: Colors.indigo[300],
       ),
       home: MyApp(),
+      // routes.
+      routes: {
+        // When navigating to the "/" route, build the FirstScreen widget.
+        // '/': (context) => MyApp(),
+        // Category list.
+        CategoryList.routeUrl: (context) => CategoryList(),
+      },
     );
   }
 }
@@ -77,7 +86,8 @@ class _MyAppState extends State<MyApp> {
         context: context,
         builder: (builder) {
           // return NewExpenses(_selectDate, widget._categories, addNewExpenses);
-          return NewExpensesForm(_selectDate, widget._categories, addNewExpenses);
+          return NewExpensesForm(
+              _selectDate, widget._categories, addNewExpenses);
         });
   }
 
@@ -160,11 +170,14 @@ class _MyAppState extends State<MyApp> {
           BottomNavigationBarItem(
             icon: Icon(Icons.star),
             title: Text('Statistics'),
-          )
+          ),
         ],
         onTap: _selectTap,
         selectedItemColor: Theme.of(context).primaryColor,
         currentIndex: tabIndex,
+      ),
+      drawer: Drawer(
+        child: CustomDrawer(),
       ),
     );
   }

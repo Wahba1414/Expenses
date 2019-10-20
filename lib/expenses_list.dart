@@ -17,6 +17,10 @@ class ExpensesList extends StatelessWidget {
     Colors.blue[200],
     Colors.blue[300],
     Colors.blue[400],
+    Colors.lightBlue[100],
+    Colors.lightBlue[200],
+    Colors.lightBlue[300],
+    Colors.lightBlue[400],
   ];
   final listItems;
   final removeItem;
@@ -38,7 +42,7 @@ class ExpensesList extends StatelessWidget {
       child: ListView.builder(
         itemCount: listItems.length,
         itemBuilder: (context, index) {
-          final colorScheme = colors[Random().nextInt(8)];
+          final colorScheme = colors[Random().nextInt(12)];
           return Dismissible(
             key: Key(listItems[index].id),
             background: Container(

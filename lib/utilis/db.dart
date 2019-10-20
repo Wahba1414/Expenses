@@ -6,11 +6,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import './../models/expenses.dart';
+import './../models/category.dart';
 
 class DBProvider {
   DBProvider._();
 
-  // Make the whole class is static. 
+  // Make the whole class is static.
   static final DBProvider db = DBProvider._();
 
   Database _database;
@@ -25,10 +26,11 @@ class DBProvider {
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
 
-    String path = join(documentsDirectory.path, "Expenses.db");
+    String path = join(documentsDirectory.path, "Expenses_t_2.db");
 
-    return await openDatabase(path, version: 1, onOpen: (db) {},
+    return await openDatabase(path, version: 2, onOpen: (db) {},
         onCreate: (Database db, int version) async {
+      // Expenses Table
       await db.execute("CREATE TABLE Expenses ("
           "id TEXT PRIMARY KEY,"
           "title TEXT,"
@@ -36,22 +38,32 @@ class DBProvider {
           "category TEXT,"
           "date TEXT"
           ")");
+      // Category Table.
+      await db.execute("CREATE TABLE Categories ("
+          "id TEXT PRIMARY KEY,"
+          "title TEXT,"
+          "color TEXT"
+          ")");
     });
   }
 
   newExpenses(Expenses newItem) async {
     final db = await database;
     //get the biggest id in the table
-    
+
     //insert to the table using the new id
     var raw = await db.rawInsert(
         "INSERT Into Expenses (id,title,amount,category,date)"
         " VALUES (?,?,?,?,?)",
-        [newItem.id, newItem.title, newItem.amount, newItem.category, newItem.date.toString()]);
+        [
+          newItem.id,
+          newItem.title,
+          newItem.amount,
+          newItem.category,
+          newItem.date.toString()
+        ]);
     return raw;
   }
-
-  
 
   Future<List<Expenses>> getAllExpenses() async {
     final db = await database;
@@ -72,5 +84,52 @@ class DBProvider {
   deleteAll() async {
     final db = await database;
     db.rawDelete("Delete * from Expenses");
+  }
+
+  // Categories CRUD.
+  Future<dynamic> newCategory(AppCategoryModel newItem) async {
+    final db = await database;
+    //get the biggest id in the table
+
+    //insert to the table using the new id
+    var raw = await db.rawInsert(
+        "INSERT Into Categories (id,title,color)"
+        " VALUES (?,?,?)",
+        [
+          newItem.id,
+          newItem.title,
+          newItem.color,
+        ]);
+    return raw;
+  }
+
+  Future<List<AppCategoryModel>> getAllCategories() async {
+    final db = await database;
+    var res = await db.query("Categories");
+    // temporary.
+    List<AppCategoryModel> list = res.isNotEmpty
+        ? res.map((c) => AppCategoryModel.fromMap(c)).toList()
+        : [];
+    return list;
+  }
+
+  updateExpenses(String oldCategoryName, String newCategoryName) async {
+    print('oldCategoryName:$oldCategoryName');
+    print('newCategoryName:$newCategoryName');
+    final db = await database;
+    var res = await db.rawUpdate('''
+    UPDATE Expenses 
+    SET category = ?
+    WHERE category = ?
+    ''', [newCategoryName, oldCategoryName]);
+    return res;
+  }
+
+  deleteCategory(AppCategoryModel category) async {
+    final db = await database;
+    await db.delete("Categories", where: "id = ?", whereArgs: [category.id]);
+
+    // Update all Expenses to unCategroized items.
+    await updateExpenses(category.title, 'No Category');
   }
 }
