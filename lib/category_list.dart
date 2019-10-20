@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 // import './new_category.dart';
 
+import './empty_list.dart';
+
 import './providers/catgeory_provider.dart';
 import './models/category.dart';
 // import './models/category.dart';
@@ -21,6 +23,7 @@ class _CategoryListState extends State<CategoryList> {
   final double addSectionHeight = 40;
 
   final titleController = TextEditingController();
+  FocusNode titleFocus = FocusNode();
 
   // startAddNewCategory(ctx) {
   //   showDialog(
@@ -42,7 +45,10 @@ class _CategoryListState extends State<CategoryList> {
       await Provider.of<AppCategoryProvider>(context, listen: false)
           .addNewCategory(newItem);
 
+      // Clear input field.
       titleController.clear();
+      // Close keyboard.
+      FocusScope.of(context).requestFocus(FocusNode());
     }
   }
 
@@ -113,8 +119,8 @@ class _CategoryListState extends State<CategoryList> {
           return Container(
             padding: EdgeInsets.only(
               top: 0,
-              left: 2,
-              right: 2,
+              left: 5,
+              right: 5,
               bottom: 10,
             ),
             // width: MediaQuery.of(context).size.width,
@@ -128,6 +134,7 @@ class _CategoryListState extends State<CategoryList> {
                       Expanded(
                           child: TextField(
                         controller: titleController,
+                        focusNode: titleFocus,
                         decoration: InputDecoration(
                           hintText: 'New Category Name',
                         ),
@@ -135,7 +142,13 @@ class _CategoryListState extends State<CategoryList> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * .2,
                         child: RaisedButton(
-                          child: Text('Add'),
+                          child: Text(
+                            'Add',
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColorLight,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           onPressed: () {
                             _addNewCategory(context);
                           },
@@ -145,52 +158,56 @@ class _CategoryListState extends State<CategoryList> {
                   ),
                 ),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: allCategories.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        padding: EdgeInsets.only(
-                          top: 5,
-                          right: 5,
-                          left: 5,
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            CircleAvatar(
-                              // backgroundColor: Theme.of(context).primaryColor,
-                              backgroundColor: _getBackGroundColor(
-                                  context, allCategories[index].color),
-                              // foregroundColor: Theme.of(context).accentColor,
-                              radius: 20,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                  child: (allCategories.length == 0)
+                      ? EmptyList(
+                          'No categories added yet!',
+                        )
+                      : ListView.builder(
+                          itemCount: allCategories.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              padding: EdgeInsets.only(
+                                top: 5,
+                                right: 5,
+                                left: 5,
                               ),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Expanded(
-                              child: Text(
-                                allCategories[index].title,
+                              child: Row(
+                                children: <Widget>[
+                                  CircleAvatar(
+                                    // backgroundColor: Theme.of(context).primaryColor,
+                                    backgroundColor: _getBackGroundColor(
+                                        context, allCategories[index].color),
+                                    // foregroundColor: Theme.of(context).accentColor,
+                                    radius: 20,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      allCategories[index].title,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    padding: EdgeInsets.all(0),
+                                    icon: Icon(Icons.delete),
+                                    color: Colors.red,
+                                    onPressed: () {
+                                      startremoveCategoryDialog(
+                                        context,
+                                        allCategories[index],
+                                      );
+                                    },
+                                    iconSize: 25,
+                                  )
+                                ],
                               ),
-                            ),
-                            IconButton(
-                              padding: EdgeInsets.all(0),
-                              icon: Icon(Icons.delete),
-                              color: Colors.red,
-                              onPressed: () {
-                                startremoveCategoryDialog(
-                                  context,
-                                  allCategories[index],
-                                );
-                              },
-                              iconSize: 25,
-                            )
-                          ],
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 ),
               ],
             ),

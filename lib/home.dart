@@ -90,7 +90,7 @@ class _HomeState extends State<Home> {
                       height: properHeight,
                       child: (widget.listItems.length > 0)
                           ? ExpensesList(widget.listItems, removeExpenses)
-                          : EmptyList(),
+                          : EmptyList('No transactions added yet!'),
                     )
                   : Container(height: properHeight, child: CategoryList())))
         ],
