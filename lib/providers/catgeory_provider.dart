@@ -28,7 +28,7 @@ class AppCategoryProvider with ChangeNotifier {
   ];
 
   Color getColorCode(String colorName) {
-    print('colorname:$colorName');
+    // print('colorname:$colorName');
 
     return (colors.firstWhere((item) {
       return item['name'] == colorName;
@@ -53,8 +53,8 @@ class AppCategoryProvider with ChangeNotifier {
   }
 
   addNewCategory(AppCategoryModel newItem) {
-    print('newItem');
-    print(newItem);
+    // print('newItem');
+    // print(newItem);
 
     if (newItem.title == null) {
       return;

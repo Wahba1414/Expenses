@@ -31,21 +31,21 @@ class _DrawerState extends State<CustomDrawer> {
               ),
             ),
           ),
-          ListTile(
-            title: Text(
-              'Categories',
-              style: TextStyle(
-                color: Theme.of(context).primaryColorDark,
-                fontSize: 18,
-              ),
-            ),
-            onTap: () {
-              print('Here');
-              // Update the state of the app.
-              Navigator.of(context).pop();
-              Navigator.pushNamed(context, CategoryList.routeUrl);  
-            },
-          ),
+          // ListTile(
+          //   title: Text(
+          //     'Categories',
+          //     style: TextStyle(
+          //       color: Theme.of(context).primaryColorDark,
+          //       fontSize: 18,
+          //     ),
+          //   ),
+          //   onTap: () {
+          //     print('Here');
+          //     // Update the state of the app.
+          //     Navigator.of(context).pop();
+          //     Navigator.pushNamed(context, CategoryList.routeUrl);  
+          //   },
+          // ),
         ],
       ),
     );

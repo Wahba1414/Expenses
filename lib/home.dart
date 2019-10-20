@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 // import './switch.dart';
+import './category_list.dart';
+
 import './expenses_list.dart';
 import './empty_list.dart';
 
@@ -83,12 +85,14 @@ class _HomeState extends State<Home> {
                   height: properHeight,
                   child: Statistics(widget.listItems, widget._categories),
                 )
-              : Container(
-                  height: properHeight,
-                  child: (widget.listItems.length > 0)
-                      ? ExpensesList(widget.listItems, removeExpenses)
-                      : EmptyList(),
-                ))
+              : ((widget.tabIndex == 0)
+                  ? Container(
+                      height: properHeight,
+                      child: (widget.listItems.length > 0)
+                          ? ExpensesList(widget.listItems, removeExpenses)
+                          : EmptyList(),
+                    )
+                  : Container(height: properHeight, child: CategoryList())))
         ],
       ),
     );

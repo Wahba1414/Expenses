@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import './new_category.dart';
+// import './new_category.dart';
 
 import './providers/catgeory_provider.dart';
 import './models/category.dart';
@@ -17,17 +17,33 @@ class CategoryList extends StatefulWidget {
 class _CategoryListState extends State<CategoryList> {
   final defaultColor = Colors.pink[200];
 
-  startAddNewCategory(ctx) {
-    showDialog(
-        context: ctx,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: NewCategory(
-              defaultColor: defaultColor,
-              parentContext: ctx,
-            ),
-          );
-        });
+  // Height of add row.
+  final double addSectionHeight = 40;
+
+  final titleController = TextEditingController();
+
+  // startAddNewCategory(ctx) {
+  //   showDialog(
+  //       context: ctx,
+  //       builder: (BuildContext context) {
+  //         return AlertDialog(
+  //           content: NewCategory(
+  //             defaultColor: defaultColor,
+  //             parentContext: ctx,
+  //           ),
+  //         );
+  //       });
+  // }
+
+  _addNewCategory(BuildContext context) async {
+    // print('titleController:${titleController.text}');
+    if (titleController.text != null && titleController.text != '') {
+      AppCategoryModel newItem = AppCategoryModel(title: titleController.text);
+      await Provider.of<AppCategoryProvider>(context, listen: false)
+          .addNewCategory(newItem);
+
+      titleController.clear();
+    }
   }
 
   Color _getBackGroundColor(BuildContext context, String colorName) {
@@ -94,75 +110,89 @@ class _CategoryListState extends State<CategoryList> {
             builder: (context, appCategoryProvider, child) {
           var allCategories = appCategoryProvider.appCategories;
 
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(
-                'Categories',
-                style: TextStyle(
-                  color: Theme.of(context).primaryColorLight,
-                ),
-              ),
-              actions: <Widget>[
-                FlatButton(
-                  child: Icon(
-                    Icons.add,
-                    color: Theme.of(context).primaryColorLight,
-                    size: 30,
-                  ),
-                  onPressed: () {
-                    startAddNewCategory(context);
-                  },
-                  // color: Colors.red,
-                )
-              ],
+          return Container(
+            padding: EdgeInsets.only(
+              top: 0,
+              left: 2,
+              right: 2,
+              bottom: 10,
             ),
-            body: Container(
-              padding: EdgeInsets.only(
-                top: 12,
-              ),
-              // width: MediaQuery.of(context).size.width,
-              child: ListView.builder(
-                itemCount: allCategories.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      children: <Widget>[
-                        CircleAvatar(
-                          // backgroundColor: Theme.of(context).primaryColor,
-                          backgroundColor: _getBackGroundColor(
-                              context, allCategories[index].color),
-                          // foregroundColor: Theme.of(context).accentColor,
-                          radius: 20,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                          ),
+            // width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: addSectionHeight,
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                          child: TextField(
+                        controller: titleController,
+                        decoration: InputDecoration(
+                          hintText: 'New Category Name',
                         ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Expanded(
-                          child: Text(
-                            allCategories[index].title,
-                          ),
-                        ),
-                        IconButton(
-                          padding: EdgeInsets.all(0),
-                          icon: Icon(Icons.delete),
-                          color: Colors.red,
+                      )),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .2,
+                        child: RaisedButton(
+                          child: Text('Add'),
                           onPressed: () {
-                            startremoveCategoryDialog(
-                              context,
-                              allCategories[index],
-                            );
+                            _addNewCategory(context);
                           },
-                          iconSize: 25,
-                        )
-                      ],
-                    ),
-                  );
-                },
-              ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: allCategories.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: EdgeInsets.only(
+                          top: 5,
+                          right: 5,
+                          left: 5,
+                        ),
+                        child: Row(
+                          children: <Widget>[
+                            CircleAvatar(
+                              // backgroundColor: Theme.of(context).primaryColor,
+                              backgroundColor: _getBackGroundColor(
+                                  context, allCategories[index].color),
+                              // foregroundColor: Theme.of(context).accentColor,
+                              radius: 20,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: Text(
+                                allCategories[index].title,
+                              ),
+                            ),
+                            IconButton(
+                              padding: EdgeInsets.all(0),
+                              icon: Icon(Icons.delete),
+                              color: Colors.red,
+                              onPressed: () {
+                                startremoveCategoryDialog(
+                                  context,
+                                  allCategories[index],
+                                );
+                              },
+                              iconSize: 25,
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           );
         }));

@@ -164,13 +164,17 @@ class _MyAppState extends State<MyApp> {
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
+            icon: Icon(Icons.home),
             title: Text('List'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.star),
             title: Text('Statistics'),
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu),
+            title: Text('Categories'),
+          )
         ],
         onTap: _selectTap,
         selectedItemColor: Theme.of(context).primaryColor,
