@@ -5,6 +5,10 @@ import './new_expenses_form.dart';
 import './drawer.dart';
 import './category_list.dart';
 
+import 'package:provider/provider.dart';
+
+import './providers/catgeory_provider.dart';
+
 // db.
 import './utilis/db.dart';
 import './models/expenses.dart';
@@ -14,62 +18,64 @@ void main() => runApp(Top());
 class Top extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        // fontFamily: 'Monotserrat',
-        // fontFamily: 'RobotoMono',
-        // fontFamily: 'OpenSans',
-        fontFamily: 'Hind',
-        primaryColor: Colors.blue[300],
-        accentColor: Colors.black87,
-        primaryColorLight: Colors.white,
-        primaryColorDark: Colors.black,
-        textTheme: TextTheme(
-          title: const TextStyle(
-            color: Colors.white,
-            fontSize: 20,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(builder: (_) => AppCategoryProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          // fontFamily: 'Monotserrat',
+          // fontFamily: 'RobotoMono',
+          // fontFamily: 'OpenSans',
+          fontFamily: 'Hind',
+          primaryColor: Colors.blue[300],
+          accentColor: Colors.black87,
+          primaryColorLight: Colors.white,
+          primaryColorDark: Colors.black,
+          textTheme: TextTheme(
+            title: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+            ),
+            body1: TextStyle(
+              color: Colors.blue[400],
+              fontSize: 18,
+            ),
           ),
-          body1: TextStyle(
-            color: Colors.blue[400],
-            fontSize: 18,
-          ),
-        ),
-        buttonTheme: ButtonThemeData(
-          textTheme: ButtonTextTheme.normal,
+          buttonTheme: ButtonThemeData(
+            textTheme: ButtonTextTheme.normal,
 
-          buttonColor: Colors.blueAccent[100],
-          // colorScheme: ColorScheme.dark(),
+            buttonColor: Colors.blueAccent[100],
+            // colorScheme: ColorScheme.dark(),
+          ),
+          // backgroundColor: Colors.cyan[400],
+          backgroundColor: Colors.purple[300],
+          // backgroundColor: Colors.pink[300],
+          // dialogBackgroundColor: Colors.blue[400]
         ),
-        // backgroundColor: Colors.cyan[400],
-        backgroundColor: Colors.purple[300],
-        // backgroundColor: Colors.pink[300],
-        // dialogBackgroundColor: Colors.blue[400]
+        home: Consumer<AppCategoryProvider>(
+            builder: (context, appCategoryProvider, child) {
+          var allCategories = appCategoryProvider.appCategories;
+          List<String> categoriesNames = allCategories.map((item)=> item.title).toList();
+          return MyApp(categoriesNames);
+        }),
+        // routes.
+        routes: {
+          // When navigating to the "/" route, build the FirstScreen widget.
+          // '/': (context) => MyApp(),
+          // Category list.
+          CategoryList.routeUrl: (context) => CategoryList(),
+        },
       ),
-      home: MyApp(),
-      // routes.
-      routes: {
-        // When navigating to the "/" route, build the FirstScreen widget.
-        // '/': (context) => MyApp(),
-        // Category list.
-        CategoryList.routeUrl: (context) => CategoryList(),
-      },
     );
   }
 }
 
 class MyApp extends StatefulWidget {
-  final _categories = [
-    'Personal',
-    'Shopping',
-    'Outings',
-    'Love',
-    'Home',
-    'Family',
-    'Food',
-    'Gym',
-    'Others'
-  ];
+  final _categories;
+
+  MyApp(this._categories);
 
   @override
   _MyAppState createState() => _MyAppState();

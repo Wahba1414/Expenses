@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 
+import './empty_list.dart';
+
 import './models/expenses.dart';
 
 class Statistics extends StatefulWidget {
@@ -18,12 +20,21 @@ class _StatisticsState extends State<Statistics> {
   Map<String, double> statistics = {};
   double totalExpenses = 0;
 
+  List<String> updatedCategories;
+
   prepareStatistics() {
     totalExpenses = 0;
+
+    // Init updatedCategories.
+    updatedCategories = [...widget.categories,'Uncategorized'];
+
     // Initialize the statistics list with available categries.
-    widget.categories.forEach((category) {
+    updatedCategories.forEach((category) {
       statistics[category] = 0;
     });
+
+    // Set the 'No Category' field.
+    // statistics['Uncategorized'] = 0;
 
     // Iterating on all transactions and sum for different categories.
     widget.transactions.forEach((transaction) {
@@ -96,10 +107,10 @@ class _StatisticsState extends State<Statistics> {
             ),
 
             // List of details for different categories.
-            Container(
+            ( (updatedCategories.length == 0) ? EmptyList('No categories added yet !') : Container(
               height: constraints.maxHeight * .9,
               child: ListView.builder(
-                  itemCount: widget.categories.length,
+                  itemCount: updatedCategories.length,
                   itemBuilder: (context, index) {
                     return Container(
                       height: constraints.maxHeight * .1,
@@ -116,7 +127,7 @@ class _StatisticsState extends State<Statistics> {
                               SizedBox(
                                 width: 10,
                               ),
-                              Text(widget.categories[index]),
+                              Text(updatedCategories[index]),
                               Spacer(
                                 flex: 2,
                               ),
@@ -127,7 +138,7 @@ class _StatisticsState extends State<Statistics> {
                                 child: FittedBox(
                                     child: Text(
                                   formatMoney(
-                                      statistics[widget.categories[index]]),
+                                      statistics[updatedCategories[index]]),
                                 )),
                               )
                             ],
@@ -141,7 +152,7 @@ class _StatisticsState extends State<Statistics> {
                       ),
                     );
                   }),
-            ),
+            )),
           ],
         ),
       );

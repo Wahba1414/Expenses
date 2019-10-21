@@ -25,7 +25,6 @@ class _CategoryListState extends State<CategoryList> {
   final titleController = TextEditingController();
   FocusNode titleFocus = FocusNode();
 
-  
   _addNewCategory(BuildContext context) async {
     // print('titleController:${titleController.text}');
     if (titleController.text != null && titleController.text != '') {
@@ -55,7 +54,7 @@ class _CategoryListState extends State<CategoryList> {
           return AlertDialog(
             // title: Text('Remove Category' ),
             content: Text(
-              'Are you sure about that ?',
+              'Are you sure ?',
               style: TextStyle(
                 color: Colors.red,
               ),
@@ -80,7 +79,6 @@ class _CategoryListState extends State<CategoryList> {
         });
   }
 
-
   @override
   void didChangeDependencies() {
     // Provider.of<AppCategoryProvider>(context).init();
@@ -89,113 +87,113 @@ class _CategoryListState extends State<CategoryList> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(builder: (_) => AppCategoryProvider()),
-        ],
+    return Container(
+        // providers: [
+        //   ChangeNotifierProvider(builder: (_) => AppCategoryProvider()),
+        // ],
         child: Consumer<AppCategoryProvider>(
             builder: (context, appCategoryProvider, child) {
-          var allCategories = appCategoryProvider.appCategories;
+      var allCategories = appCategoryProvider.appCategories;
 
-          return Container(
-            padding: EdgeInsets.only(
-              top: 8,
-              left: 5,
-              right: 2,
-              bottom: 0,
-            ),
-            // width: MediaQuery.of(context).size.width,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  height: addSectionHeight,
-                  width: MediaQuery.of(context).size.width,
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                          child: TextField(
-                        controller: titleController,
-                        focusNode: titleFocus,
-                        decoration: InputDecoration(
-                          hintText: 'New Category Name',
+      return Container(
+        padding: EdgeInsets.only(
+          top: 8,
+          left: 5,
+          right: 2,
+          bottom: 0,
+        ),
+        // width: MediaQuery.of(context).size.width,
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: addSectionHeight,
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                      child: TextField(
+                    controller: titleController,
+                    focusNode: titleFocus,
+                    decoration: InputDecoration(
+                      hintText: 'New Category Name',
+                    ),
+                  )),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * .2,
+                    height: addSectionHeight + 1,
+                    child: RaisedButton(
+                      color: Theme.of(context).backgroundColor,
+                      child: Text(
+                        'Add',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColorLight,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
                         ),
-                      )),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * .2,
-                        height: addSectionHeight + 1,
-                        child: RaisedButton(
-                          color: Theme.of(context).backgroundColor,
-                          child: Text(
-                            'Add',
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColorLight,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
+                      ),
+                      onPressed: () {
+                        _addNewCategory(context);
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              child: (allCategories.length == 0)
+                  ? EmptyList(
+                      'No categories added yet!',
+                    )
+                  : ListView.builder(
+                      itemCount: allCategories.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          padding: EdgeInsets.only(
+                            top: 5,
+                            right: 5,
+                            left: 5,
                           ),
-                          onPressed: () {
-                            _addNewCategory(context);
-                          },
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: (allCategories.length == 0)
-                      ? EmptyList(
-                          'No categories added yet!',
-                        )
-                      : ListView.builder(
-                          itemCount: allCategories.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              padding: EdgeInsets.only(
-                                top: 5,
-                                right: 5,
-                                left: 5,
+                          child: Row(
+                            children: <Widget>[
+                              CircleAvatar(
+                                // backgroundColor: Theme.of(context).primaryColor,
+                                backgroundColor: _getBackGroundColor(
+                                    context, allCategories[index].color),
+                                // foregroundColor: Theme.of(context).accentColor,
+                                radius: 20,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                ),
                               ),
-                              child: Row(
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    // backgroundColor: Theme.of(context).primaryColor,
-                                    backgroundColor: _getBackGroundColor(
-                                        context, allCategories[index].color),
-                                    // foregroundColor: Theme.of(context).accentColor,
-                                    radius: 20,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      allCategories[index].title,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    padding: EdgeInsets.all(0),
-                                    icon: Icon(Icons.delete),
-                                    color: Colors.red,
-                                    onPressed: () {
-                                      startremoveCategoryDialog(
-                                        context,
-                                        allCategories[index],
-                                      );
-                                    },
-                                    iconSize: 25,
-                                  )
-                                ],
+                              SizedBox(
+                                width: 20,
                               ),
-                            );
-                          },
-                        ),
-                ),
-              ],
+                              Expanded(
+                                child: Text(
+                                  allCategories[index].title,
+                                ),
+                              ),
+                              IconButton(
+                                padding: EdgeInsets.all(0),
+                                icon: Icon(Icons.delete),
+                                color: Colors.red,
+                                onPressed: () {
+                                  startremoveCategoryDialog(
+                                    context,
+                                    allCategories[index],
+                                  );
+                                },
+                                iconSize: 25,
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ),
             ),
-          );
-        }));
+          ],
+        ),
+      );
+    }));
   }
 }

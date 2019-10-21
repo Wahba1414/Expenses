@@ -130,6 +130,6 @@ class DBProvider {
     await db.delete("Categories", where: "id = ?", whereArgs: [category.id]);
 
     // Update all Expenses to unCategroized items.
-    await updateExpenses(category.title, 'No Category');
+    await updateExpenses(category.title, 'Uncategorized');
   }
 }
