@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import './category_list.dart';
 
 class CustomDrawer extends StatefulWidget {
   @override

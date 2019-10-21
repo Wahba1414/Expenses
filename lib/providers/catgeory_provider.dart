@@ -25,6 +25,16 @@ class AppCategoryProvider with ChangeNotifier {
     {'name': 'lightBlue200', 'value': Colors.lightBlue[200]},
     {'name': 'lightBlue300', 'value': Colors.lightBlue[300]},
     {'name': 'lightBlue400', 'value': Colors.lightBlue[400]},
+    {'name': 'lightBlue600', 'value': Colors.lightBlue[600]},
+    {'name': 'lightBlue700', 'value': Colors.lightBlue[700]},
+    {'name': 'lightBlue800', 'value': Colors.lightBlue[800]},
+    {'name': 'purple100', 'value': Colors.purple[100]},
+    {'name': 'purple200', 'value': Colors.purple[200]},
+    {'name': 'purple300', 'value': Colors.purple[300]},
+    {'name': 'purple400', 'value': Colors.purple[400]},
+    {'name': 'purple600', 'value': Colors.purple[600]},
+    {'name': 'purple700', 'value': Colors.purple[700]},
+    {'name': 'purple800', 'value': Colors.purple[800]}
   ];
 
   Color getColorCode(String colorName) {
@@ -36,9 +46,7 @@ class AppCategoryProvider with ChangeNotifier {
   }
 
   // Default.
-  List<AppCategoryModel> _categories = [
-    AppCategoryModel(id: '1', title: 'Others', color: 'blue100')
-  ];
+  List<AppCategoryModel> _categories = [];
 
   AppCategoryProvider() {
     DBProvider.db.getAllCategories().then((updatedList) {
@@ -64,7 +72,7 @@ class AppCategoryProvider with ChangeNotifier {
     newItem.id = new Uuid().v1();
 
     // Pick up a random color.
-    int seed = Random().nextInt(10000000);
+    int seed = Random().nextInt(4294967296);
     newItem.color = colors[Random(seed).nextInt(12)]['name'];
 
     //  Optimistic update.
@@ -84,8 +92,8 @@ class AppCategoryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  removeCategory(AppCategoryModel removedCategory){
-    _categories.removeWhere((item){
+  removeCategory(AppCategoryModel removedCategory) {
+    _categories.removeWhere((item) {
       return item.id == removedCategory.id;
     });
 
@@ -100,5 +108,4 @@ class AppCategoryProvider with ChangeNotifier {
     // Notify listeners.
     notifyListeners();
   }
-
 }

@@ -41,7 +41,10 @@ class Top extends StatelessWidget {
           buttonColor: Colors.blueAccent[100],
           // colorScheme: ColorScheme.dark(),
         ),
-        backgroundColor: Colors.indigo[300],
+        // backgroundColor: Colors.cyan[400],
+        backgroundColor: Colors.purple[300],
+        // backgroundColor: Colors.pink[300],
+        // dialogBackgroundColor: Colors.blue[400]
       ),
       home: MyApp(),
       // routes.

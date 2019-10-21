@@ -25,19 +25,7 @@ class _CategoryListState extends State<CategoryList> {
   final titleController = TextEditingController();
   FocusNode titleFocus = FocusNode();
 
-  // startAddNewCategory(ctx) {
-  //   showDialog(
-  //       context: ctx,
-  //       builder: (BuildContext context) {
-  //         return AlertDialog(
-  //           content: NewCategory(
-  //             defaultColor: defaultColor,
-  //             parentContext: ctx,
-  //           ),
-  //         );
-  //       });
-  // }
-
+  
   _addNewCategory(BuildContext context) async {
     // print('titleController:${titleController.text}');
     if (titleController.text != null && titleController.text != '') {
@@ -92,13 +80,6 @@ class _CategoryListState extends State<CategoryList> {
         });
   }
 
-  // @override
-  // void initState() {
-  //   Future.delayed(Duration(seconds: 0), () {
-  //     Provider.of<AppCategoryProvider>(context).init();
-  //   });
-  //   super.initState();
-  // }
 
   @override
   void didChangeDependencies() {
@@ -118,10 +99,10 @@ class _CategoryListState extends State<CategoryList> {
 
           return Container(
             padding: EdgeInsets.only(
-              top: 0,
+              top: 8,
               left: 5,
-              right: 5,
-              bottom: 10,
+              right: 2,
+              bottom: 0,
             ),
             // width: MediaQuery.of(context).size.width,
             child: Column(
@@ -141,12 +122,15 @@ class _CategoryListState extends State<CategoryList> {
                       )),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * .2,
+                        height: addSectionHeight + 1,
                         child: RaisedButton(
+                          color: Theme.of(context).backgroundColor,
                           child: Text(
                             'Add',
                             style: TextStyle(
                               color: Theme.of(context).primaryColorLight,
                               fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
                           ),
                           onPressed: () {
