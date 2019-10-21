@@ -83,7 +83,7 @@ class _HomeState extends State<Home> {
           ((widget.tabIndex == 1)
               ? Container(
                   height: properHeight,
-                  child: Statistics(widget.listItems, widget._categories),
+                  child: Statistics(widget.listItems, [...widget._categories, 'Uncategorized']),
                 )
               : ((widget.tabIndex == 0)
                   ? Container(

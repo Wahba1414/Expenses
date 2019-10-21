@@ -1,10 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
+import 'package:provider/provider.dart';
 
 // import './models/expenses.dart';
+import './providers/catgeory_provider.dart';
 
 class ExpensesList extends StatelessWidget {
   // List of possible colors for Avatar.
@@ -34,57 +34,62 @@ class ExpensesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        top: 12,
-      ),
-      // width: MediaQuery.of(context).size.width,
-      child: ListView.builder(
-        itemCount: listItems.length,
-        itemBuilder: (context, index) {
-          final colorScheme = colors[Random().nextInt(12)];
-          return Dismissible(
-            key: Key(listItems[index].id),
-            background: Container(
-              // width: 10,
-              color: Colors.red,
-            ),
-            onDismissed: (_) {
-              removeItem(listItems[index].id);
-            },
-            child: (ListTile(
-              // key: ValueKey(listItems[index].id),
-              leading: CircleAvatar(
-                // backgroundColor: Theme.of(context).primaryColor,
-                backgroundColor: colorScheme,
-                foregroundColor: Theme.of(context).accentColor,
-                radius: 30,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: FittedBox(
-                    child: Text(
-                      formatMoney(double.parse(listItems[index].amount)),
+    return Consumer<AppCategoryProvider>(
+        builder: (context, appCategoryProvider, child) {
+      Function getColor =  appCategoryProvider.getColorCodeFromCategory;
+      
+      return Container(
+        padding: EdgeInsets.only(
+          top: 12,
+        ),
+        // width: MediaQuery.of(context).size.width,
+        child: ListView.builder(
+          itemCount: listItems.length,
+          itemBuilder: (context, index) {
+            final colorScheme = getColor(listItems[index].category);
+            return Dismissible(
+              key: Key(listItems[index].id),
+              background: Container(
+                // width: 10,
+                color: Colors.red,
+              ),
+              onDismissed: (_) {
+                removeItem(listItems[index].id);
+              },
+              child: (ListTile(
+                // key: ValueKey(listItems[index].id),
+                leading: CircleAvatar(
+                  // backgroundColor: Theme.of(context).primaryColor,
+                  backgroundColor: colorScheme,
+                  foregroundColor: Theme.of(context).accentColor,
+                  radius: 30,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FittedBox(
+                      child: Text(
+                        formatMoney(double.parse(listItems[index].amount)),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              title: Text(
-                listItems[index].title,
-              ),
-              subtitle: Text(
-                '${listItems[index].category}\n${DateFormat.yMMMMd().format(listItems[index].date)}',
-              ),
-              trailing: Container(
-                child: Icon(
-                  Icons.mood,
-                  size: 40,
-                  color: colorScheme,
+                title: Text(
+                  listItems[index].title,
                 ),
-              ),
-            )),
-          );
-        },
-      ),
-    );
+                subtitle: Text(
+                  '${listItems[index].category}\n${DateFormat.yMMMMd().format(listItems[index].date)}',
+                ),
+                trailing: Container(
+                  child: Icon(
+                    Icons.mood,
+                    size: 40,
+                    color: colorScheme,
+                  ),
+                ),
+              )),
+            );
+          },
+        ),
+      );
+    });
   }
 }

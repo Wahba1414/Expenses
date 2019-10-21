@@ -26,7 +26,8 @@ class _StatisticsState extends State<Statistics> {
     totalExpenses = 0;
 
     // Init updatedCategories.
-    updatedCategories = [...widget.categories,'Uncategorized'];
+    // updatedCategories = [...widget.categories,'Uncategorized'];
+    updatedCategories = [...widget.categories];
 
     // Initialize the statistics list with available categries.
     updatedCategories.forEach((category) {
@@ -40,7 +41,11 @@ class _StatisticsState extends State<Statistics> {
     widget.transactions.forEach((transaction) {
       setState(() {
         totalExpenses += int.parse(transaction.amount);
-        statistics[transaction.category] += int.parse(transaction.amount);
+        statistics[transaction.category] =
+            (statistics[transaction.category] == null)
+                ? double.parse(transaction.amount)
+                : (statistics[transaction.category] +
+                    double.parse(transaction.amount));
       });
     });
   }
@@ -107,52 +112,55 @@ class _StatisticsState extends State<Statistics> {
             ),
 
             // List of details for different categories.
-            ( (updatedCategories.length == 0) ? EmptyList('No categories added yet !') : Container(
-              height: constraints.maxHeight * .9,
-              child: ListView.builder(
-                  itemCount: updatedCategories.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      height: constraints.maxHeight * .1,
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Icon(
-                                Icons.star,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(updatedCategories[index]),
-                              Spacer(
-                                flex: 2,
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(
-                                  right: 10,
+            ((updatedCategories.length == 0)
+                ? EmptyList('No categories added yet !')
+                : Container(
+                    height: constraints.maxHeight * .9,
+                    child: ListView.builder(
+                        itemCount: updatedCategories.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            height: constraints.maxHeight * .1,
+                            child: Card(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 5),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.star,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(updatedCategories[index]),
+                                    Spacer(
+                                      flex: 2,
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                        right: 10,
+                                      ),
+                                      child: FittedBox(
+                                          child: Text(
+                                        formatMoney(statistics[
+                                            updatedCategories[index]]),
+                                      )),
+                                    )
+                                  ],
                                 ),
-                                child: FittedBox(
-                                    child: Text(
-                                  formatMoney(
-                                      statistics[updatedCategories[index]]),
-                                )),
-                              )
-                            ],
-                          ),
-                        ),
-                        color: Colors.white,
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                    );
-                  }),
-            )),
+                              ),
+                              color: Colors.white,
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                          );
+                        }),
+                  )),
           ],
         ),
       );

@@ -45,6 +45,29 @@ class AppCategoryProvider with ChangeNotifier {
     })['value']);
   }
 
+  Color getColorCodeFromCategory(String categoryName) {
+    print('categoryName:$categoryName');
+    print('categoryName:${_categories.length}');
+
+    if (categoryName == 'Uncategorized') {
+      return Colors.red[300]; //Default color.
+    } else {
+      var selectedCategory = _categories.firstWhere((item) {
+        return item.title == categoryName;
+      });
+
+      print('selectedCategory$selectedCategory');
+
+      if (selectedCategory != null) {
+        return (colors.firstWhere((item) {
+          return item['name'] == selectedCategory.color;
+        })['value']);
+      } else {
+        return Colors.blueAccent[200]; //default color.
+      }
+    }
+  }
+
   // Default.
   List<AppCategoryModel> _categories = [];
 
