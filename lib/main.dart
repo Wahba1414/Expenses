@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import './home.dart';
-import './new_expenses_form.dart';
 import './drawer.dart';
 import './category_list.dart';
+import './new_expenses_form.dart';
 
 import 'package:provider/provider.dart';
 
@@ -12,6 +12,8 @@ import './providers/catgeory_provider.dart';
 // db.
 import './utilis/db.dart';
 import './models/expenses.dart';
+
+import './models/expenses_arguments.dart';
 
 void main() => runApp(Top());
 
@@ -67,6 +69,7 @@ class Top extends StatelessWidget {
           // '/': (context) => MyApp(),
           // Category list.
           CategoryList.routeUrl: (context) => CategoryList(),
+          NewExpensesForm.routeUrl: (context) => NewExpensesForm(),
         },
       ),
     );
@@ -91,14 +94,17 @@ class _MyAppState extends State<MyApp> {
   }
 
   // Function opens a bottom modal.
-  void _startAddNewExpenses() {
-    showModalBottomSheet(
-        context: context,
-        builder: (builder) {
-          // return NewExpenses(_selectDate, widget._categories, addNewExpenses);
-          return NewExpensesForm(
-              _selectDate, widget._categories, addNewExpenses);
-        });
+  void _startAddNewExpenses(context) {
+    // showModalBottomSheet(
+    //     context: context,
+    //     builder: (builder) {
+    //       // return NewExpenses(_selectDate, widget._categories, addNewExpenses);
+    //       return NewExpensesForm(
+    //           _selectDate, widget._categories, addNewExpenses);
+    //     });
+    Navigator.of(context).pushNamed(NewExpensesForm.routeUrl,
+        arguments:
+            ExpensesArguments(_selectDate, widget._categories, addNewExpenses));
   }
 
   // Open date picker.
@@ -146,7 +152,9 @@ class _MyAppState extends State<MyApp> {
                   color: Theme.of(context).primaryColorLight,
                   size: 24,
                 ),
-                onPressed: _startAddNewExpenses,
+                onPressed: () {
+                  _startAddNewExpenses(context);
+                },
                 // color: Colors.red,
               ),
               IconButton(
