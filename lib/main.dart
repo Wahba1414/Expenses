@@ -28,7 +28,7 @@ class Top extends StatelessWidget {
           // fontFamily: 'Monotserrat',
           // fontFamily: 'RobotoMono',
           // fontFamily: 'OpenSans',
-          fontFamily: 'Hind',
+          // fontFamily: 'Hind',
           primaryColor: Colors.blue[300],
           accentColor: Colors.black87,
           primaryColorLight: Colors.white,
@@ -57,7 +57,8 @@ class Top extends StatelessWidget {
         home: Consumer<AppCategoryProvider>(
             builder: (context, appCategoryProvider, child) {
           var allCategories = appCategoryProvider.appCategories;
-          List<String> categoriesNames = allCategories.map((item)=> item.title).toList();
+          List<String> categoriesNames =
+              allCategories.map((item) => item.title).toList();
           return MyApp(categoriesNames);
         }),
         // routes.
@@ -135,14 +136,30 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       actions: <Widget>[
-        FlatButton(
-          child: Icon(
-            Icons.add,
-            color: Theme.of(context).primaryColorLight,
-            size: 30,
+        Container(
+          padding: EdgeInsets.only(right: 10),
+          child: Row(
+            children: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.add,
+                  color: Theme.of(context).primaryColorLight,
+                  size: 34,
+                ),
+                onPressed: _startAddNewExpenses,
+                // color: Colors.red,
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.more_vert,
+                  color: Theme.of(context).primaryColorLight,
+                  size: 32,
+                ),
+                onPressed: () {},
+                // color: Colors.red,
+              ),
+            ],
           ),
-          onPressed: _startAddNewExpenses,
-          // color: Colors.red,
         )
       ],
     );
