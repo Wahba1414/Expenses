@@ -13,22 +13,22 @@ import '../utilis/db.dart';
 
 class AppCategoryProvider with ChangeNotifier {
   final List<Map<String, dynamic>> colors = [
-    {'name': 'indigo100', 'value': Colors.indigo[100]},
+    // {'name': 'indigo100', 'value': Colors.indigo[100]},
     {'name': 'indigo200', 'value': Colors.indigo[200]},
     {'name': 'indigo300', 'value': Colors.indigo[300]},
     {'name': 'indigo400', 'value': Colors.indigo[400]},
-    {'name': 'blue100', 'value': Colors.blue[100]},
+    // {'name': 'blue100', 'value': Colors.blue[100]},
     {'name': 'blue200', 'value': Colors.blue[200]},
     {'name': 'blue300', 'value': Colors.blue[300]},
     {'name': 'blue400', 'value': Colors.blue[400]},
-    {'name': 'blue100', 'value': Colors.lightBlue[100]},
+    // {'name': 'blue100', 'value': Colors.lightBlue[100]},
     {'name': 'lightBlue200', 'value': Colors.lightBlue[200]},
     {'name': 'lightBlue300', 'value': Colors.lightBlue[300]},
     {'name': 'lightBlue400', 'value': Colors.lightBlue[400]},
     {'name': 'lightBlue600', 'value': Colors.lightBlue[600]},
     {'name': 'lightBlue700', 'value': Colors.lightBlue[700]},
     {'name': 'lightBlue800', 'value': Colors.lightBlue[800]},
-    {'name': 'purple100', 'value': Colors.purple[100]},
+    // {'name': 'purple100', 'value': Colors.purple[100]},
     {'name': 'purple200', 'value': Colors.purple[200]},
     {'name': 'purple300', 'value': Colors.purple[300]},
     {'name': 'purple400', 'value': Colors.purple[400]},
@@ -96,7 +96,7 @@ class AppCategoryProvider with ChangeNotifier {
 
     // Pick up a random color.
     int seed = Random().nextInt(4294967296);
-    newItem.color = colors[Random(seed).nextInt(12)]['name'];
+    newItem.color = colors[Random(seed).nextInt(18)]['name'];
 
     //  Optimistic update.
     _categories.add(newItem);

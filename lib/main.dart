@@ -144,7 +144,7 @@ class _MyAppState extends State<MyApp> {
                 icon: Icon(
                   Icons.add,
                   color: Theme.of(context).primaryColorLight,
-                  size: 34,
+                  size: 24,
                 ),
                 onPressed: _startAddNewExpenses,
                 // color: Colors.red,
@@ -153,7 +153,7 @@ class _MyAppState extends State<MyApp> {
                 icon: Icon(
                   Icons.more_vert,
                   color: Theme.of(context).primaryColorLight,
-                  size: 32,
+                  size: 24,
                 ),
                 onPressed: () {},
                 // color: Colors.red,

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
+import 'package:provider/provider.dart';
 
 import './empty_list.dart';
-
 import './models/expenses.dart';
+import './providers/catgeory_provider.dart';
 
 class Statistics extends StatefulWidget {
   final List<Expenses> transactions;
@@ -60,110 +60,128 @@ class _StatisticsState extends State<Statistics> {
     // Prepare the statistics.
     prepareStatistics();
 
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-      return Container(
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: constraints.maxHeight * .1,
-              child: Card(
-                color: Theme.of(context).backgroundColor,
-                elevation: 10,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Icon(
-                        Icons.attach_money,
-                        color: Theme.of(context).primaryColorLight,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        'Total',
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorLight),
-                      ),
-                      Spacer(
-                        flex: 2,
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(
-                          right: 10,
+    return Consumer<AppCategoryProvider>(
+        builder: (context, appCategoryProvider, child) {
+      Function getColor = appCategoryProvider.getColorCodeFromCategory;
+
+      return LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        return Container(
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: constraints.maxHeight * .1,
+                child: Card(
+                  color: Theme.of(context).backgroundColor,
+                  elevation: 10,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Icon(
+                          Icons.attach_money,
+                          color: Theme.of(context).primaryColorLight,
                         ),
-                        child: FittedBox(
-                          child: Text(
-                            formatMoney(totalExpenses),
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColorLight),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Total',
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight),
+                        ),
+                        Spacer(
+                          flex: 2,
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(
+                            right: 10,
                           ),
-                        ),
-                      )
-                    ],
+                          child: FittedBox(
+                            child: Text(
+                              formatMoney(totalExpenses),
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
 
-            // List of details for different categories.
-            ((updatedCategories.length == 0)
-                ? EmptyList('No categories added yet !')
-                : Container(
-                    height: constraints.maxHeight * .9,
-                    child: ListView.builder(
-                        itemCount: updatedCategories.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            height: constraints.maxHeight * .1,
-                            child: Card(
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 5),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.star,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(updatedCategories[index]),
-                                    Spacer(
-                                      flex: 2,
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.only(
-                                        right: 10,
+              // List of details for different categories.
+              ((updatedCategories.length == 0)
+                  ? EmptyList('No categories added yet !')
+                  : Container(
+                      height: constraints.maxHeight * .9,
+                      child: ListView.builder(
+                          itemCount: updatedCategories.length,
+                          itemBuilder: (context, index) {
+                            // Get Category Color.
+                            var catgeoryColor =
+                                getColor(updatedCategories[index]);
+
+                            return Container(
+                              height: constraints.maxHeight * .1,
+                              child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 5),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.star,
+                                        color:
+                                            catgeoryColor, //Theme.of(context).primaryColor,
                                       ),
-                                      child: FittedBox(
-                                          child: Text(
-                                        formatMoney(statistics[
-                                            updatedCategories[index]]),
-                                      )),
-                                    )
-                                  ],
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        updatedCategories[index],
+                                        style: TextStyle(
+                                          color: catgeoryColor,
+                                        ),
+                                      ),
+                                      Spacer(
+                                        flex: 2,
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.only(
+                                          right: 10,
+                                        ),
+                                        child: FittedBox(
+                                            child: Text(
+                                          formatMoney(statistics[
+                                              updatedCategories[index]]),
+                                          style: TextStyle(
+                                            color: catgeoryColor,
+                                          ),
+                                        )),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                color: Colors.white,
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
                                 ),
                               ),
-                              color: Colors.white,
-                              elevation: 5,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                            ),
-                          );
-                        }),
-                  )),
-          ],
-        ),
-      );
+                            );
+                          }),
+                    )),
+            ],
+          ),
+        );
+      });
     });
   }
 }
