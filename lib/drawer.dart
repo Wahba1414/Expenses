@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 
 import './providers/catgeory_provider.dart';
 
+import './models/fliters.dart';
+
 class CustomDrawer extends StatefulWidget {
   @override
   _DrawerState createState() => _DrawerState();
@@ -17,8 +19,7 @@ class _DrawerState extends State<CustomDrawer> {
     return index + 1;
   });
 
-  String selectedCategory;
-  String selectedMonth;
+  AppFilters filters;
 
   @override
   Widget build(BuildContext context) {
@@ -64,13 +65,13 @@ class _DrawerState extends State<CustomDrawer> {
                         onSaved: (value) {},
                         onChanged: (_newValue) {
                           setState(() {
-                            selectedCategory = _newValue;
+                            filters.category = _newValue;
                           });
                         },
                         decoration: InputDecoration(
-                          labelText: (selectedCategory == null)
+                          labelText: (filters.category == null)
                               ? 'Category'
-                              : selectedCategory,
+                              : filters.category,
                         ),
                         items: (allCategories).map((AppCategoryModel item) {
                           return DropdownMenuItem<String>(
@@ -107,13 +108,13 @@ class _DrawerState extends State<CustomDrawer> {
                         onSaved: (value) {},
                         onChanged: (_newValue) {
                           setState(() {
-                            selectedMonth = _newValue;
+                            filters.month = int.parse(_newValue);
                           });
                         },
                         decoration: InputDecoration(
-                          hintText: (selectedMonth == null)
+                          hintText: (filters.month == null)
                               ? 'Month'
-                              : selectedMonth.toString(),
+                              : filters.month.toString(),
                         ),
                       ),
                     ],
