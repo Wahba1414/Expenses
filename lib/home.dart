@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
+import './providers/expenses_provider.dart';
+
 // import './switch.dart';
 import './category_list.dart';
 
@@ -12,7 +16,6 @@ import './models/expenses.dart';
 import './statistics.dart';
 
 class Home extends StatefulWidget {
-  final List<Expenses> listItems;
   final Function reload;
   final _categories;
   final int tabIndex;
@@ -20,8 +23,7 @@ class Home extends StatefulWidget {
   final appBarHeight;
   final statusBarHeight = 24;
 
-  Home(this.appBarHeight, this.listItems, this.reload, this._categories,
-      this.tabIndex);
+  Home(this.appBarHeight, this.reload, this._categories, this.tabIndex);
 
   @override
   _HomeState createState() => _HomeState();
@@ -39,36 +41,36 @@ class _HomeState extends State<Home> {
     // }
   }
 
-  void removeExpenses(var id) async {
-    // Get the removed item.
-    removedItem = widget.listItems.firstWhere((item) => item.id == id);
+  // void removeExpenses(var id) async {
+  //   // Get the removed item.
+  //   removedItem = widget.listItems.firstWhere((item) => item.id == id);
 
-    setState(() {
-      widget.listItems.removeWhere((item) => item.id == id);
-    });
+  //   setState(() {
+  //     widget.listItems.removeWhere((item) => item.id == id);
+  //   });
 
-    await DBProvider.db.deleteExpenses(id);
-    widget.reload();
+  //   await DBProvider.db.deleteExpenses(id);
+  //   widget.reload();
 
-    // Assure remove any previous snakbars.
-    Scaffold.of(context).removeCurrentSnackBar();
+  //   // Assure remove any previous snakbars.
+  //   Scaffold.of(context).removeCurrentSnackBar();
 
-    // Show a new one.
-    Scaffold.of(context).showSnackBar(SnackBar(
-      duration: Duration(
-        seconds: 5,
-      ),
-      backgroundColor: Theme.of(context).backgroundColor,
-      content: Text("Item removed"),
-      action: SnackBarAction(
-        label: 'Undo',
-        textColor: Theme.of(context).primaryColorLight,
-        onPressed: () {
-          addNewExpenses(removedItem);
-        },
-      ),
-    ));
-  }
+  //   // Show a new one.
+  //   Scaffold.of(context).showSnackBar(SnackBar(
+  //     duration: Duration(
+  //       seconds: 5,
+  //     ),
+  //     backgroundColor: Theme.of(context).backgroundColor,
+  //     content: Text("Item removed"),
+  //     action: SnackBarAction(
+  //       label: 'Undo',
+  //       textColor: Theme.of(context).primaryColorLight,
+  //       onPressed: () {
+  //         addNewExpenses(removedItem);
+  //       },
+  //     ),
+  //   ));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -83,14 +85,24 @@ class _HomeState extends State<Home> {
           ((widget.tabIndex == 1)
               ? Container(
                   height: properHeight,
-                  child: Statistics(widget.listItems, [...widget._categories, 'Uncategorized']),
+                  child: Consumer<AppExpensesProvider>(
+                      builder: (context, appExpensesProvider, child) {
+                    var expensesList = appExpensesProvider.expenses;
+                    return Statistics(
+                        expensesList, [...widget._categories, 'Uncategorized']);
+                  }),
                 )
               : ((widget.tabIndex == 0)
                   ? Container(
                       height: properHeight,
-                      child: (widget.listItems.length > 0)
-                          ? ExpensesList(widget.listItems, removeExpenses)
-                          : EmptyList('No transactions added yet!'),
+                      child: (Consumer<AppExpensesProvider>(
+                          builder: (context, appExpensesProvider, child) {
+                        var expensesList = appExpensesProvider.expenses;
+
+                        return (expensesList.length > 0)
+                            ? ExpensesList(expensesList)
+                            : EmptyList('No transactions added yet!');
+                      })),
                     )
                   : Container(height: properHeight, child: CategoryList())))
         ],

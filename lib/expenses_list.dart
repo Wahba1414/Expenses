@@ -1,3 +1,4 @@
+import 'package:expenses/providers/expenses_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
@@ -7,25 +8,9 @@ import 'package:provider/provider.dart';
 import './providers/catgeory_provider.dart';
 
 class ExpensesList extends StatelessWidget {
-  // List of possible colors for Avatar.
-  final List<Color> colors = [
-    Colors.indigo[100],
-    Colors.indigo[200],
-    Colors.indigo[300],
-    Colors.indigo[400],
-    Colors.blue[100],
-    Colors.blue[200],
-    Colors.blue[300],
-    Colors.blue[400],
-    Colors.lightBlue[100],
-    Colors.lightBlue[200],
-    Colors.lightBlue[300],
-    Colors.lightBlue[400],
-  ];
   final listItems;
-  final removeItem;
 
-  ExpensesList(this.listItems, this.removeItem);
+  ExpensesList(this.listItems);
 
   // Format money texts.
   formatMoney(value) {
@@ -48,48 +33,73 @@ class ExpensesList extends StatelessWidget {
           itemBuilder: (context, index) {
             // print('listItems[index].mood:${listItems[index].mood}');
             final colorScheme = getColor(listItems[index].category);
-            return Dismissible(
-              key: Key(listItems[index].id),
-              background: Container(
-                // width: 10,
-                color: Colors.red,
-              ),
-              onDismissed: (_) {
-                removeItem(listItems[index].id);
-              },
-              child: (ListTile(
-                // key: ValueKey(listItems[index].id),
-                leading: CircleAvatar(
-                  // backgroundColor: Theme.of(context).primaryColor,
-                  backgroundColor: colorScheme,
-                  foregroundColor: Theme.of(context).accentColor,
-                  radius: 30,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: FittedBox(
-                      child: Text(
-                        formatMoney(double.parse(listItems[index].amount)),
+            return Consumer<AppExpensesProvider>(
+                builder: (context, appExpensesProvider, child) {
+              var removeItem = appExpensesProvider.deleteExpenses;
+              return Dismissible(
+                key: Key(listItems[index].id),
+                background: Container(
+                  // width: 10,
+                  color: Colors.red,
+                ),
+                onDismissed: (_) async {
+                  var removedItem = listItems[index];
+
+                  await removeItem(listItems[index].id);
+
+                  // Assure remove any previous snakbars.
+                  Scaffold.of(context).removeCurrentSnackBar();
+
+                  // Show a new one.
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    duration: Duration(
+                      seconds: 5,
+                    ),
+                    backgroundColor: Theme.of(context).backgroundColor,
+                    content: Text("Item removed"),
+                    action: SnackBarAction(
+                      label: 'Undo',
+                      textColor: Theme.of(context).primaryColorLight,
+                      onPressed: () {
+                        appExpensesProvider.newExpenses(removedItem);
+                      },
+                    ),
+                  ));
+                },
+                child: (ListTile(
+                  // key: ValueKey(listItems[index].id),
+                  leading: CircleAvatar(
+                    // backgroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: colorScheme,
+                    foregroundColor: Theme.of(context).accentColor,
+                    radius: 30,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FittedBox(
+                        child: Text(
+                          formatMoney(double.parse(listItems[index].amount)),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                title: Text(
-                  listItems[index].title,
-                ),
-                subtitle: Text(
-                  '${listItems[index].category}\n${DateFormat.yMMMMd().format(listItems[index].date)}',
-                ),
-                trailing: Container(
-                  child: Icon(
-                    (listItems[index].mood == 'Okay')
-                        ? Icons.mood
-                        : Icons.mood_bad,
-                    size: 40,
-                    color: colorScheme,
+                  title: Text(
+                    listItems[index].title,
                   ),
-                ),
-              )),
-            );
+                  subtitle: Text(
+                    '${listItems[index].category}\n${DateFormat.yMMMMd().format(listItems[index].date)}',
+                  ),
+                  trailing: Container(
+                    child: Icon(
+                      (listItems[index].mood == 'Okay')
+                          ? Icons.mood
+                          : Icons.mood_bad,
+                      size: 40,
+                      color: colorScheme,
+                    ),
+                  ),
+                )),
+              );
+            });
           },
         ),
       );

@@ -69,7 +69,7 @@ class DBProvider {
   }
 
   Future<List<Expenses>> getExpenses(AppFilters filters) async {
-    print('filters.category:${filters.category}');
+    // print('filters.category:${filters.category}');
 
     final db = await database;
     List<Map<String, dynamic>> res;

@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import './providers/catgeory_provider.dart';
 import './providers/filters_provider.dart';
+import './providers/expenses_provider.dart';
 
 // db.
 import './utilis/db.dart';
@@ -25,6 +26,7 @@ class Top extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(builder: (_) => AppCategoryProvider()),
         ChangeNotifierProvider(builder: (_) => AppFiltersProvider()),
+        ChangeNotifierProvider(builder: (_) => AppExpensesProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -106,7 +108,7 @@ class _MyAppState extends State<MyApp> {
     //     });
     Navigator.of(context).pushNamed(NewExpensesForm.routeUrl,
         arguments:
-            ExpensesArguments(_selectDate, widget._categories, addNewExpenses));
+            ExpensesArguments(_selectDate, widget._categories));
   }
 
   // Open date picker.
@@ -179,34 +181,16 @@ class _MyAppState extends State<MyApp> {
       appBar: appBar,
       body: Consumer<AppFiltersProvider>(
           builder: (context, appFiltersProvider, child) {
-        return FutureBuilder<List<Expenses>>(
-            future: DBProvider.db.getExpenses(appFiltersProvider.appFilters),
-            builder: (
-              BuildContext context,
-              AsyncSnapshot<List<Expenses>> snapshot,
-            ) {
-              // print("snapshot.data");
-              // print(snapshot.data);
-              return (snapshot.connectionState == ConnectionState.waiting)
-                  ? Center(
-                      child: CircularProgressIndicator(
-                        backgroundColor: Theme.of(context).primaryColor,
-                      ),
-                    )
-                  : Container(
-                      // height:
-                      //     (MediaQuery.of(context).size.height - appBar.preferredSize.height) * .5,
-                      child: Home(
-                        appBar.preferredSize.height +
-                            kBottomNavigationBarHeight +
-                            6,
-                        snapshot.data ?? [],
-                        reload,
-                        widget._categories,
-                        tabIndex,
-                      ),
-                    );
-            });
+        return Container(
+          // height:
+          //     (MediaQuery.of(context).size.height - appBar.preferredSize.height) * .5,
+          child: Home(
+            appBar.preferredSize.height + kBottomNavigationBarHeight + 6,
+            reload,
+            widget._categories,
+            tabIndex,
+          ),
+        );
       }),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[

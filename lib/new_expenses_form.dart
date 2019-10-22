@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
+
+import './providers/expenses_provider.dart';
 
 import './models/expenses.dart';
 import './models/expenses_arguments.dart';
@@ -48,7 +51,7 @@ class _NewExpensesFormState extends State<NewExpensesForm> {
     });
   }
 
-  _submit() {
+  _submit(BuildContext context) async {
     final isValid = _formKey.currentState.validate();
     // print('isValid: $isValid');
     if (isValid) {
@@ -56,11 +59,10 @@ class _NewExpensesFormState extends State<NewExpensesForm> {
       _formKey.currentState.save();
       // editedExpenses.log();
       editedExpenses.id = new Uuid().v1();
-      args.addNewExpenses(editedExpenses).then((isSucceeded) {
-        if (isSucceeded) {
-          Navigator.of(context).pop();
-        }
-      });
+      await Provider.of<AppExpensesProvider>(context)
+          .newExpenses(editedExpenses);
+
+      Navigator.of(context).pop();
     }
   }
 
@@ -234,7 +236,9 @@ class _NewExpensesFormState extends State<NewExpensesForm> {
                               fontSize: 20,
                               color: Theme.of(context).primaryColorLight),
                         ),
-                        onPressed: _submit,
+                        onPressed: () {
+                          _submit(context);
+                        },
                       ),
                     ),
                   ],

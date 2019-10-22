@@ -1,6 +1,6 @@
 import 'package:expenses/models/fliters.dart';
-
 import './../models/expenses.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter/foundation.dart';
@@ -16,9 +16,12 @@ class AppExpensesProvider with ChangeNotifier {
     return [..._expenses];
   }
 
+// To save last filters.
+  AppFilters filters = AppFilters();
+
   // Get Expenses.
   AppExpensesProvider() {
-    DBProvider.db.getExpenses(null).then((updatedList) {
+    DBProvider.db.getExpenses(AppFilters()).then((updatedList) {
       _expenses = updatedList;
       // Notify listerners.
       notifyListeners();
@@ -26,6 +29,9 @@ class AppExpensesProvider with ChangeNotifier {
   }
 
   filterExpenses(AppFilters filters) {
+    // Save the new filters.
+    filters = filters;
+
     DBProvider.db.getExpenses(filters).then((updatedList) {
       _expenses = updatedList;
       // Notify listerners.
@@ -33,9 +39,16 @@ class AppExpensesProvider with ChangeNotifier {
     });
   }
 
+  // Add a new expenses.
+  newExpenses(Expenses newItem) async {
+    await DBProvider.db.newExpenses(newItem);
+
+    _expenses = await DBProvider.db.getExpenses(filters);
+    notifyListeners();
+  }
+
   // Update Expenses.
-  updateExpenses(String oldCategoryName, String newCategoryName,
-      AppFilters filters) async {
+  updateExpenses(String oldCategoryName, String newCategoryName) async {
     await DBProvider.db.updateExpenses(oldCategoryName, newCategoryName);
 
     DBProvider.db.getExpenses(filters).then((updatedList) {
@@ -46,7 +59,7 @@ class AppExpensesProvider with ChangeNotifier {
   }
 
   // Remove Expenses.
-  deleteExpenses(String id, AppFilters filters) async {
+  deleteExpenses(String id) async {
     await DBProvider.db.deleteExpenses(id);
 
     DBProvider.db.getExpenses(filters).then((updatedList) {
@@ -54,5 +67,12 @@ class AppExpensesProvider with ChangeNotifier {
       // Notify listerners.
       notifyListeners();
     });
+  }
+
+  refresh() async {
+    // print('here in refresh');
+    _expenses = await DBProvider.db.getExpenses(filters);
+
+    notifyListeners();
   }
 }

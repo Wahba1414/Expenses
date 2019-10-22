@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import './providers/catgeory_provider.dart';
 import './providers/filters_provider.dart';
+import './providers/expenses_provider.dart';
 
 import './models/fliters.dart';
 
@@ -38,7 +39,10 @@ class _DrawerState extends State<CustomDrawer> {
       // print('here');
       _formKey.currentState.save();
       // editedExpenses.log();
+
+      // Update providers.
       await Provider.of<AppFiltersProvider>(context).updateFilters(filters);
+      await Provider.of<AppExpensesProvider>(context).filterExpenses(filters);
 
       // Close drawer.
       Navigator.of(context).pop();
@@ -48,7 +52,10 @@ class _DrawerState extends State<CustomDrawer> {
   resetFilters(BuildContext context) async {
     filters = AppFilters();
     // editedExpenses.log();
+
+    // Update providers.
     await Provider.of<AppFiltersProvider>(context).updateFilters(filters);
+    await Provider.of<AppExpensesProvider>(context).filterExpenses(filters);
 
     // Close drawer.
     Navigator.of(context).pop();

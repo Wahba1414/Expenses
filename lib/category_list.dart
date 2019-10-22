@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import './empty_list.dart';
 
 import './providers/catgeory_provider.dart';
+import './providers/expenses_provider.dart';
+
 import './models/category.dart';
 // import './models/category.dart';
 
@@ -43,8 +45,12 @@ class _CategoryListState extends State<CategoryList> {
     return Provider.of<AppCategoryProvider>(context).getColorCode(colorName);
   }
 
-  _removeCategory(BuildContext context, AppCategoryModel removedCategory) {
-    Provider.of<AppCategoryProvider>(context).removeCategory(removedCategory);
+  _removeCategory(
+      BuildContext context, AppCategoryModel removedCategory) async {
+    // Refresh.
+    await Provider.of<AppCategoryProvider>(context)
+        .removeCategory(removedCategory);
+    await Provider.of<AppExpensesProvider>(context).refresh();
   }
 
   startremoveCategoryDialog(ctx, removedCategory) {
@@ -56,10 +62,7 @@ class _CategoryListState extends State<CategoryList> {
             // title: Text('Remove Category' ),
             content: Text(
               'Are you sure ?',
-              style: TextStyle(
-                color: Colors.red[300],
-                fontSize: 20
-              ),
+              style: TextStyle(color: Colors.red[300], fontSize: 20),
             ),
             actions: <Widget>[
               FlatButton(

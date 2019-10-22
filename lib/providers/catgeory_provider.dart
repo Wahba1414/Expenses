@@ -115,19 +115,20 @@ class AppCategoryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  removeCategory(AppCategoryModel removedCategory) {
+  removeCategory(AppCategoryModel removedCategory) async {
     _categories.removeWhere((item) {
       return item.id == removedCategory.id;
     });
 
-    DBProvider.db.deleteCategory(removedCategory).catchError((error) {
+    try {
+      await DBProvider.db.deleteCategory(removedCategory);
+    } catch (_) {
       // Roll back.
       addNewCategory(removedCategory);
 
       // Notify listeners.
       notifyListeners();
-    });
-
+    }
     // Notify listeners.
     notifyListeners();
   }
