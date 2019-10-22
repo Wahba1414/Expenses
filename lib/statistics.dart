@@ -92,7 +92,8 @@ class _StatisticsState extends State<Statistics> {
                         Text(
                           'Total',
                           style: TextStyle(
-                              color: Theme.of(context).primaryColorLight),
+                              color: Theme.of(context).primaryColorLight,
+                              fontSize: 16),
                         ),
                         Spacer(
                           flex: 2,
@@ -105,7 +106,8 @@ class _StatisticsState extends State<Statistics> {
                             child: Text(
                               formatMoney(totalExpenses),
                               style: TextStyle(
-                                  color: Theme.of(context).primaryColorLight),
+                                  color: Theme.of(context).primaryColorLight,
+                                  fontSize: 16),
                             ),
                           ),
                         )
@@ -148,6 +150,7 @@ class _StatisticsState extends State<Statistics> {
                                         updatedCategories[index],
                                         style: TextStyle(
                                           color: catgeoryColor,
+                                          fontSize: 16,
                                         ),
                                       ),
                                       Spacer(
@@ -163,6 +166,7 @@ class _StatisticsState extends State<Statistics> {
                                               updatedCategories[index]]),
                                           style: TextStyle(
                                             color: catgeoryColor,
+                                            fontSize: 16,
                                           ),
                                         )),
                                       )

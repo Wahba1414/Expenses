@@ -106,7 +106,12 @@ class _DrawerState extends State<CustomDrawer> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('Filter By Category'),
+                      Text(
+                        'Filter By Category',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
                       DropdownButtonFormField(
                         onSaved: (value) {},
                         onChanged: (_newValue) {
@@ -141,7 +146,12 @@ class _DrawerState extends State<CustomDrawer> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('Filter By Month Number'),
+                      Text(
+                        'Filter By Month Number',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
                       TextFormField(
                         keyboardType: TextInputType.number,
                         validator: (value) {
@@ -188,7 +198,7 @@ class _DrawerState extends State<CustomDrawer> {
                         'Reset',
                         style: TextStyle(
                           color: Theme.of(context).primaryColorLight,
-                          fontSize: 18,
+                          fontSize: 16,
                         ),
                       ),
                       onPressed: () {
@@ -201,7 +211,7 @@ class _DrawerState extends State<CustomDrawer> {
                         'Apply',
                         style: TextStyle(
                           color: Theme.of(context).primaryColorLight,
-                          fontSize: 18,
+                          fontSize: 16,
                         ),
                       ),
                       onPressed: () {

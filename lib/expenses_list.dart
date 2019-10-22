@@ -84,9 +84,15 @@ class ExpensesList extends StatelessWidget {
                   ),
                   title: Text(
                     listItems[index].title,
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
                   ),
                   subtitle: Text(
                     '${listItems[index].category}\n${DateFormat.yMMMMd().format(listItems[index].date)}',
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
                   ),
                   trailing: Container(
                     child: Icon(

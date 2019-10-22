@@ -176,6 +176,9 @@ class _CategoryListState extends State<CategoryList> {
                               Expanded(
                                 child: Text(
                                   allCategories[index].title,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ),
                               IconButton(
