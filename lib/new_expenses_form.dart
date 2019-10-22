@@ -145,14 +145,14 @@ class _NewExpensesFormState extends State<NewExpensesForm> {
                 ),
                 // Category
                 DropdownButtonFormField(
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Category is empty!';
-                    }
-                    return null;
-                  },
+                  // validator: (value) {
+                  //   if (value == null) {
+                  //     return 'Category is empty!';
+                  //   }
+                  //   return null;
+                  // },
                   onSaved: (value) {
-                    editedExpenses.category = value;
+                    editedExpenses.category = value ?? 'Uncategorized';
                   },
                   onChanged: (_newValue) {
                     print('_newvalue');
