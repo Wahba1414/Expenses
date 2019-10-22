@@ -228,7 +228,12 @@ class _NewExpensesFormState extends State<NewExpensesForm> {
                     Container(
                       height: 50,
                       child: RaisedButton(
-                        child: Text('Add'),
+                        child: Text(
+                          'Add',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Theme.of(context).primaryColorLight),
+                        ),
                         onPressed: _submit,
                       ),
                     ),
