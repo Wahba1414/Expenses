@@ -26,7 +26,7 @@ class DBProvider {
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
 
-    String path = join(documentsDirectory.path, "Expenses_t_2.db");
+    String path = join(documentsDirectory.path, "Expenses_t_3.db");
 
     return await openDatabase(path, version: 2, onOpen: (db) {},
         onCreate: (Database db, int version) async {
@@ -36,7 +36,8 @@ class DBProvider {
           "title TEXT,"
           "amount TEXT,"
           "category TEXT,"
-          "date TEXT"
+          "date TEXT,"
+          "mood TEXT"
           ")");
       // Category Table.
       await db.execute("CREATE TABLE Categories ("
@@ -53,14 +54,15 @@ class DBProvider {
 
     //insert to the table using the new id
     var raw = await db.rawInsert(
-        "INSERT Into Expenses (id,title,amount,category,date)"
-        " VALUES (?,?,?,?,?)",
+        "INSERT Into Expenses (id,title,amount,category,date,mood)"
+        " VALUES (?,?,?,?,?,?)",
         [
           newItem.id,
           newItem.title,
           newItem.amount,
           newItem.category,
-          newItem.date.toString()
+          newItem.date.toString(),
+          newItem.mood
         ]);
     return raw;
   }

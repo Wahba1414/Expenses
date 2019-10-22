@@ -36,8 +36,8 @@ class ExpensesList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AppCategoryProvider>(
         builder: (context, appCategoryProvider, child) {
-      Function getColor =  appCategoryProvider.getColorCodeFromCategory;
-      
+      Function getColor = appCategoryProvider.getColorCodeFromCategory;
+
       return Container(
         padding: EdgeInsets.only(
           top: 12,
@@ -46,6 +46,7 @@ class ExpensesList extends StatelessWidget {
         child: ListView.builder(
           itemCount: listItems.length,
           itemBuilder: (context, index) {
+            print('listItems[index].mood:${listItems[index].mood}');
             final colorScheme = getColor(listItems[index].category);
             return Dismissible(
               key: Key(listItems[index].id),
@@ -80,7 +81,9 @@ class ExpensesList extends StatelessWidget {
                 ),
                 trailing: Container(
                   child: Icon(
-                    Icons.mood,
+                    (listItems[index].mood == 'Okay')
+                        ? Icons.mood
+                        : Icons.mood_bad,
                     size: 40,
                     color: colorScheme,
                   ),
