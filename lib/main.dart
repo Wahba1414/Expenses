@@ -187,17 +187,25 @@ class _MyAppState extends State<MyApp> {
             ) {
               // print("snapshot.data");
               // print(snapshot.data);
-              return Container(
-                // height:
-                //     (MediaQuery.of(context).size.height - appBar.preferredSize.height) * .5,
-                child: Home(
-                  appBar.preferredSize.height + kBottomNavigationBarHeight + 6,
-                  snapshot.data ?? [],
-                  reload,
-                  widget._categories,
-                  tabIndex,
-                ),
-              );
+              return (snapshot.connectionState == ConnectionState.waiting)
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Theme.of(context).primaryColor,
+                      ),
+                    )
+                  : Container(
+                      // height:
+                      //     (MediaQuery.of(context).size.height - appBar.preferredSize.height) * .5,
+                      child: Home(
+                        appBar.preferredSize.height +
+                            kBottomNavigationBarHeight +
+                            6,
+                        snapshot.data ?? [],
+                        reload,
+                        widget._categories,
+                        tabIndex,
+                      ),
+                    );
             });
       }),
       bottomNavigationBar: BottomNavigationBar(
