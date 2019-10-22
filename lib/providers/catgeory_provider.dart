@@ -12,6 +12,9 @@ import '../models/category.dart';
 import '../utilis/db.dart';
 
 class AppCategoryProvider with ChangeNotifier {
+  // Default.
+  List<AppCategoryModel> _categories = [];
+
   final List<Map<String, dynamic>> colors = [
     // {'name': 'indigo100', 'value': Colors.indigo[100]},
     {'name': 'indigo200', 'value': Colors.indigo[200]},
@@ -46,8 +49,8 @@ class AppCategoryProvider with ChangeNotifier {
   }
 
   Color getColorCodeFromCategory(String categoryName) {
-    print('categoryName:$categoryName');
-    print('categoryName:${_categories.length}');
+    // print('categoryName:$categoryName');
+    // print('categoryName:${_categories.length}');
 
     if (categoryName == 'Uncategorized') {
       return Colors.red[300]; //Default color.
@@ -56,7 +59,7 @@ class AppCategoryProvider with ChangeNotifier {
         return item.title == categoryName;
       });
 
-      print('selectedCategory$selectedCategory');
+      // print('selectedCategory$selectedCategory');
 
       if (selectedCategory != null) {
         return (colors.firstWhere((item) {
@@ -67,9 +70,6 @@ class AppCategoryProvider with ChangeNotifier {
       }
     }
   }
-
-  // Default.
-  List<AppCategoryModel> _categories = [];
 
   AppCategoryProvider() {
     DBProvider.db.getAllCategories().then((updatedList) {

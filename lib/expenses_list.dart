@@ -46,7 +46,7 @@ class ExpensesList extends StatelessWidget {
         child: ListView.builder(
           itemCount: listItems.length,
           itemBuilder: (context, index) {
-            print('listItems[index].mood:${listItems[index].mood}');
+            // print('listItems[index].mood:${listItems[index].mood}');
             final colorScheme = getColor(listItems[index].category);
             return Dismissible(
               key: Key(listItems[index].id),

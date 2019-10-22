@@ -155,8 +155,8 @@ class _NewExpensesFormState extends State<NewExpensesForm> {
                         editedExpenses.category = value ?? 'Uncategorized';
                       },
                       onChanged: (_newValue) {
-                        print('_newvalue');
-                        print(_newValue);
+                        // print('_newvalue');
+                        // print(_newValue);
                         setState(() {
                           editedExpenses.category = _newValue;
                         });

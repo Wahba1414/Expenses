@@ -7,6 +7,7 @@ import 'package:sqflite/sqflite.dart';
 
 import './../models/expenses.dart';
 import './../models/category.dart';
+import './../models/fliters.dart';
 
 class DBProvider {
   DBProvider._();
@@ -67,9 +68,19 @@ class DBProvider {
     return raw;
   }
 
-  Future<List<Expenses>> getAllExpenses() async {
+  Future<List<Expenses>> getExpenses(AppFilters filters) async {
+    print('filters.category:${filters.category}');
+
     final db = await database;
-    var res = await db.query("Expenses");
+    List<Map<String, dynamic>> res;
+
+    if (filters.category == null) {
+      res = await db.query("Expenses");
+    } else {
+      res = await db.query("Expenses",
+          where: 'category = ?', whereArgs: [filters.category]);
+    }
+
     // temporary.
     // print('results from db');
     // print(res);
@@ -116,8 +127,8 @@ class DBProvider {
   }
 
   updateExpenses(String oldCategoryName, String newCategoryName) async {
-    print('oldCategoryName:$oldCategoryName');
-    print('newCategoryName:$newCategoryName');
+    // print('oldCategoryName:$oldCategoryName');
+    // print('newCategoryName:$newCategoryName');
     final db = await database;
     var res = await db.rawUpdate('''
     UPDATE Expenses 

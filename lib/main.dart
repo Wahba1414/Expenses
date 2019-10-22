@@ -8,6 +8,7 @@ import './new_expenses_form.dart';
 import 'package:provider/provider.dart';
 
 import './providers/catgeory_provider.dart';
+import './providers/filters_provider.dart';
 
 // db.
 import './utilis/db.dart';
@@ -23,6 +24,7 @@ class Top extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(builder: (_) => AppCategoryProvider()),
+        ChangeNotifierProvider(builder: (_) => AppFiltersProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -175,26 +177,29 @@ class _MyAppState extends State<MyApp> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: appBar,
-      body: FutureBuilder<List<Expenses>>(
-          future: DBProvider.db.getAllExpenses(),
-          builder: (
-            BuildContext context,
-            AsyncSnapshot<List<Expenses>> snapshot,
-          ) {
-            // print("snapshot.data");
-            // print(snapshot.data);
-            return Container(
-              // height:
-              //     (MediaQuery.of(context).size.height - appBar.preferredSize.height) * .5,
-              child: Home(
-                appBar.preferredSize.height + kBottomNavigationBarHeight + 6,
-                snapshot.data ?? [],
-                reload,
-                widget._categories,
-                tabIndex,
-              ),
-            );
-          }),
+      body: Consumer<AppFiltersProvider>(
+          builder: (context, appFiltersProvider, child) {
+        return FutureBuilder<List<Expenses>>(
+            future: DBProvider.db.getExpenses(appFiltersProvider.appFilters),
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<List<Expenses>> snapshot,
+            ) {
+              // print("snapshot.data");
+              // print(snapshot.data);
+              return Container(
+                // height:
+                //     (MediaQuery.of(context).size.height - appBar.preferredSize.height) * .5,
+                child: Home(
+                  appBar.preferredSize.height + kBottomNavigationBarHeight + 6,
+                  snapshot.data ?? [],
+                  reload,
+                  widget._categories,
+                  tabIndex,
+                ),
+              );
+            });
+      }),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(

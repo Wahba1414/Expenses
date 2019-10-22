@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import './providers/catgeory_provider.dart';
+import './providers/filters_provider.dart';
 
 import './models/fliters.dart';
 
@@ -12,6 +13,7 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _DrawerState extends State<CustomDrawer> {
+  bool isFirstTime = true;
   // Inputs controller.
   // Form Key.
   final _formKey = GlobalKey<FormState>();
@@ -21,8 +23,45 @@ class _DrawerState extends State<CustomDrawer> {
 
   AppFilters filters;
 
+  initstate() {
+    Future.delayed(Duration(milliseconds: 0), () {
+      // Get the persistent values.
+      filters = Provider.of<AppFiltersProvider>(context).appFilters;
+    });
+    super.initState();
+  }
+
+  applyFilters(BuildContext context) async {
+    final isValid = _formKey.currentState.validate();
+    // print('isValid: $isValid');
+    if (isValid) {
+      // print('here');
+      _formKey.currentState.save();
+      // editedExpenses.log();
+      await Provider.of<AppFiltersProvider>(context).updateFilters(filters);
+
+      // Close drawer.
+      Navigator.of(context).pop();
+    }
+  }
+
+  resetFilters(BuildContext context) async {
+    filters = AppFilters();
+    // editedExpenses.log();
+    await Provider.of<AppFiltersProvider>(context).updateFilters(filters);
+
+    // Close drawer.
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Just for the first time.
+    // Work around.
+    if (isFirstTime) {
+      filters = Provider.of<AppFiltersProvider>(context).appFilters;
+      isFirstTime = false;
+    }
     return Consumer<AppCategoryProvider>(
         builder: (context, appCategoryProvider, child) {
       var allCategories = appCategoryProvider.appCategories;
@@ -99,16 +138,23 @@ class _DrawerState extends State<CustomDrawer> {
                       TextFormField(
                         keyboardType: TextInputType.number,
                         validator: (value) {
+                          if (value == null || value == '') {
+                            return null;
+                          }
                           var parsedValue = int.parse(value);
                           if (parsedValue < 1 || parsedValue > 12) {
                             return 'Month Number is not valid!';
                           }
+
                           return null;
                         },
                         onSaved: (value) {},
                         onChanged: (_newValue) {
+                          // print('_newValue:$_newValue');
                           setState(() {
-                            filters.month = int.parse(_newValue);
+                            filters.month =
+                                (_newValue == '') ? null : int.parse(_newValue);
+                            // print('filters.month:${filters.month}');
                           });
                         },
                         decoration: InputDecoration(
@@ -126,16 +172,36 @@ class _DrawerState extends State<CustomDrawer> {
               ),
               Container(
                 height: 50,
-                child: RaisedButton(
-                  color: Theme.of(context).backgroundColor,
-                  child: Text(
-                    'Apply',
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColorLight,
-                      fontSize: 18,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    RaisedButton(
+                      color: Theme.of(context).primaryColor,
+                      child: Text(
+                        'Reset',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColorLight,
+                          fontSize: 18,
+                        ),
+                      ),
+                      onPressed: () {
+                        resetFilters(context);
+                      },
                     ),
-                  ),
-                  onPressed: () {},
+                    RaisedButton(
+                      color: Theme.of(context).backgroundColor,
+                      child: Text(
+                        'Apply',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColorLight,
+                          fontSize: 18,
+                        ),
+                      ),
+                      onPressed: () {
+                        applyFilters(context);
+                      },
+                    ),
+                  ],
                 ),
               )
             ],
