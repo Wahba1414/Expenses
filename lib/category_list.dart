@@ -52,11 +52,13 @@ class _CategoryListState extends State<CategoryList> {
         context: ctx,
         builder: (BuildContext context) {
           return AlertDialog(
+            backgroundColor: Colors.blueGrey[100],
             // title: Text('Remove Category' ),
             content: Text(
               'Are you sure ?',
               style: TextStyle(
-                color: Colors.red,
+                color: Colors.red[300],
+                fontSize: 20
               ),
             ),
             actions: <Widget>[
@@ -72,7 +74,7 @@ class _CategoryListState extends State<CategoryList> {
                   _removeCategory(ctx, removedCategory);
                   Navigator.of(context).pop();
                 },
-                textColor: Colors.red,
+                textColor: Colors.red[300],
               )
             ],
           );
