@@ -107,8 +107,7 @@ class _MyAppState extends State<MyApp> {
     //           _selectDate, widget._categories, addNewExpenses);
     //     });
     Navigator.of(context).pushNamed(NewExpensesForm.routeUrl,
-        arguments:
-            ExpensesArguments(_selectDate, widget._categories));
+        arguments: ExpensesArguments(_selectDate, widget._categories));
   }
 
   // Open date picker.
@@ -130,7 +129,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _selectTap(int index) {
-    print('index: $index');
+    // print('index: $index');
     setState(() {
       tabIndex = index;
     });
