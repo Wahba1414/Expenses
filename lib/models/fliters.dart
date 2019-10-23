@@ -19,4 +19,14 @@ class AppFilters {
       monthEnd: copy.monthEnd,
     );
   }
+
+
+  log(){
+    print('category:$category');
+    print('year:$year');
+    print('month:$month');
+    print('monthStart:$monthStart');
+    print('monthEnd:$monthEnd');
+  }
+
 }

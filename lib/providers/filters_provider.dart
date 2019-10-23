@@ -11,7 +11,7 @@ class AppFiltersProvider with ChangeNotifier {
     return new AppFilters.copy(_filters);
   }
 
-  updateFilters(AppFilters newData) {
+  updateFilters(AppFilters newData) async {
     _filters.category = newData.category;
 
     // Month.
@@ -28,7 +28,11 @@ class AppFiltersProvider with ChangeNotifier {
 
     }
 
+    // print('Fliters after update');
+    // _filters.log();
     // Notify listerners.
     notifyListeners();
+
+    return _filters;
   }
 }

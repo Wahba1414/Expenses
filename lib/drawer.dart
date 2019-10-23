@@ -41,8 +41,10 @@ class _DrawerState extends State<CustomDrawer> {
       // editedExpenses.log();
 
       // Update providers.
-      await Provider.of<AppFiltersProvider>(context).updateFilters(filters);
-      await Provider.of<AppExpensesProvider>(context).filterExpenses(filters);
+      var updatedFilters =
+          await Provider.of<AppFiltersProvider>(context).updateFilters(filters);
+      await Provider.of<AppExpensesProvider>(context)
+          .filterExpenses(updatedFilters);
 
       // Close drawer.
       Navigator.of(context).pop();
@@ -54,8 +56,11 @@ class _DrawerState extends State<CustomDrawer> {
     // editedExpenses.log();
 
     // Update providers.
-    await Provider.of<AppFiltersProvider>(context).updateFilters(filters);
-    await Provider.of<AppExpensesProvider>(context).filterExpenses(filters);
+    var updatedFilters =
+        await Provider.of<AppFiltersProvider>(context).updateFilters(filters);
+
+    await Provider.of<AppExpensesProvider>(context)
+        .filterExpenses(updatedFilters);
 
     // Close drawer.
     Navigator.of(context).pop();
@@ -153,6 +158,9 @@ class _DrawerState extends State<CustomDrawer> {
                         ),
                       ),
                       TextFormField(
+                        initialValue: (filters.month != null)
+                            ? filters.month.toString()
+                            : '',
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value == '') {
@@ -175,9 +183,7 @@ class _DrawerState extends State<CustomDrawer> {
                           });
                         },
                         decoration: InputDecoration(
-                          hintText: (filters.month == null)
-                              ? 'Month'
-                              : filters.month.toString(),
+                          hintText: (filters.month == null) ? 'Month' : '',
                         ),
                       ),
                     ],

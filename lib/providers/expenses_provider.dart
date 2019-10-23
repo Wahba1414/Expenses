@@ -28,9 +28,9 @@ class AppExpensesProvider with ChangeNotifier {
     });
   }
 
-  filterExpenses(AppFilters filters) {
+  filterExpenses(AppFilters _filters) {
     // Save the new filters.
-    filters = filters;
+    filters = _filters;
 
     DBProvider.db.getExpenses(filters).then((updatedList) {
       _expenses = updatedList;

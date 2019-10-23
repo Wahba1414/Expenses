@@ -70,6 +70,8 @@ class DBProvider {
 
   Future<List<Expenses>> getExpenses(AppFilters filters) async {
     // print('filters.category:${filters.category}');
+    // print('filters from getExpenses function');
+    // filters.log();
 
     final db = await database;
     List<Map<String, dynamic>> res;
@@ -86,6 +88,20 @@ class DBProvider {
     // print(res);
     List<Expenses> list =
         res.isNotEmpty ? res.map((c) => Expenses.fromMap(c)).toList() : [];
+
+    // Apply the date filters outside the db queries for now!!
+    if (filters.month != null) {
+      list = list.where((item) {
+        print('item.date:${item.date}');
+        print('filters.monthEnd:${filters.monthEnd}');
+        print('filters.monthStart:${filters.monthStart}');
+        return (item.date.isBefore(filters.monthEnd) &&
+            item.date.isAfter(filters.monthStart));
+      }).toList();
+    }
+
+    // print('list after flitering:${list.length}');
+
     return list;
   }
 
