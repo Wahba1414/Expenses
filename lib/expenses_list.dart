@@ -6,6 +6,9 @@ import 'package:provider/provider.dart';
 
 // import './models/expenses.dart';
 import './providers/catgeory_provider.dart';
+import './providers/app_state_provider.dart';
+
+import './models/app_state.dart';
 
 class ExpensesList extends StatelessWidget {
   final listItems;
@@ -47,6 +50,10 @@ class ExpensesList extends StatelessWidget {
 
                   await removeItem(listItems[index].id);
 
+                  // Reset
+                  Provider.of<AppExpensesProvider>(context)
+                      .selectAndUnselectAll(false);
+
                   // Assure remove any previous snakbars.
                   Scaffold.of(context).removeCurrentSnackBar();
 
@@ -66,44 +73,79 @@ class ExpensesList extends StatelessWidget {
                     ),
                   ));
                 },
-                child: (ListTile(
-                  // key: ValueKey(listItems[index].id),
-                  leading: CircleAvatar(
-                    // backgroundColor: Theme.of(context).primaryColor,
-                    backgroundColor: colorScheme,
-                    foregroundColor: Theme.of(context).accentColor,
-                    radius: 30,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FittedBox(
-                        child: Text(
-                          formatMoney(double.parse(listItems[index].amount)),
+                child: (Consumer<AppStateProvider>(
+                    builder: (context, appStateProvider, child) {
+                  AppState appState = appStateProvider.appState;
+                  return ListTile(
+                    onLongPress: () {
+                      Provider.of<AppStateProvider>(context)
+                          .updateAppState(new AppState(mutliSelect: true));
+
+                      listItems[index].selected = true;
+                      Provider.of<AppExpensesProvider>(context)
+                          .updateSelectedFlag(listItems[index].id, true);
+                    },
+                    onTap: () {
+                      if (appState.mutliSelect) {
+                        listItems[index].selected = !listItems[index].selected;
+                        Provider.of<AppExpensesProvider>(context)
+                            .updateSelectedFlag(
+                                listItems[index].id, listItems[index].selected);
+                      }
+                    },
+                    // key: ValueKey(listItems[index].id),
+                    leading: CircleAvatar(
+                      // backgroundColor: Theme.of(context).primaryColor,
+                      backgroundColor: colorScheme,
+                      foregroundColor: Theme.of(context).accentColor,
+                      radius: 30,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FittedBox(
+                          child: Text(
+                            formatMoney(double.parse(listItems[index].amount)),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  title: Text(
-                    listItems[index].title,
-                    style: TextStyle(
-                      fontSize: 16,
+                    title: Text(
+                      listItems[index].title,
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
                     ),
-                  ),
-                  subtitle: Text(
-                    '${listItems[index].category}\n${DateFormat.yMMMMd().format(listItems[index].date)}',
-                    style: TextStyle(
-                      fontSize: 14,
+                    subtitle: Text(
+                      '${listItems[index].category}\n${DateFormat.yMMMMd().format(listItems[index].date)}',
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
                     ),
-                  ),
-                  trailing: Container(
-                    child: Icon(
-                      (listItems[index].mood == 'Okay')
-                          ? Icons.mood
-                          : Icons.mood_bad,
-                      size: 40,
-                      color: colorScheme,
-                    ),
-                  ),
-                )),
+                    trailing: Consumer<AppStateProvider>(
+                        builder: (context, appStateProvider, child) {
+                      AppState appState = appStateProvider.appState;
+                      return Container(
+                        child: (appState.mutliSelect)
+                            ? Checkbox(
+                                activeColor: Theme.of(context).backgroundColor,
+                                value: listItems[index].selected ?? false,
+                                onChanged: (_value) {
+                                  listItems[index].selected = _value;
+                                  Provider.of<AppExpensesProvider>(context)
+                                      .updateSelectedFlag(
+                                          listItems[index].id, _value);
+                                },
+                              )
+                            : Icon(
+                                (listItems[index].mood == 'Okay')
+                                    ? Icons.mood
+                                    : Icons.mood_bad,
+                                size: 40,
+                                color: colorScheme,
+                              ),
+                      );
+                    }),
+                  );
+                })),
               );
             });
           },

@@ -11,12 +11,14 @@ import '../utilis/db.dart';
 class AppExpensesProvider with ChangeNotifier {
   // Default.
   List<Expenses> _expenses = [];
+  int selectedExpensesCount = 0;
+  bool isAllSelected = false;
 
   List<Expenses> get expenses {
     return [..._expenses];
   }
 
-// To save last filters.
+  // To save last filters.
   AppFilters filters = AppFilters();
 
   // Get Expenses.
@@ -74,5 +76,76 @@ class AppExpensesProvider with ChangeNotifier {
     _expenses = await DBProvider.db.getExpenses(filters);
 
     notifyListeners();
+  }
+
+  // Functions to deal with multiple selections.
+  updateSelectedFlag(String id, bool flag) {
+    // Update expenses list.
+    _expenses.firstWhere((item) {
+      return item.id == id;
+    }).selected = flag;
+
+    // Update total count.
+    selectedExpensesCount = _expenses
+        .where((item) {
+          return (item.selected == true);
+        })
+        .toList()
+        .length;
+
+    isAllSelected = (_expenses.length == selectedExpensesCount) ? true : false;
+
+    notifyListeners();
+  }
+
+  // Unselect all OR reset.
+  selectAndUnselectAll(bool flag) {
+    _expenses.forEach((item) {
+      item.selected = flag;
+    });
+
+    if (flag) {
+      // all selected.
+      selectedExpensesCount = _expenses.length;
+      isAllSelected = true;
+    } else {
+      // All unselected.
+      selectedExpensesCount = 0;
+      isAllSelected = false;
+    }
+
+    // Notify listerners.
+    notifyListeners();
+  }
+
+  deleteSelectedItems() async {
+    // List<String> ids = _expenses
+    //     .where((item) {
+    //       return item.selected;
+    //     })
+    //     .toList()
+    //     .map((item) {
+    //       return item.id;
+    //     })
+    //     .toList();
+    List<String> ids = [];
+
+    _expenses.forEach((item) {
+      if (item.selected) {
+        ids.add(item.id);
+      }
+    });
+
+    await DBProvider.db.deleteMultipleExpenses(ids);
+
+    // Reset.
+    selectedExpensesCount = 0;
+    isAllSelected = false;
+
+    DBProvider.db.getExpenses(filters).then((updatedList) {
+      _expenses = updatedList;
+      // Notify listerners.
+      notifyListeners();
+    });
   }
 }

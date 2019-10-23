@@ -5,8 +5,9 @@ class Expenses {
   String category;
   DateTime date;
   String mood;
+  bool selected;
 
-  Expenses({this.id, this.title, this.amount, this.category, this.date,this.mood});
+  Expenses({this.id, this.title, this.amount, this.category, this.date,this.mood,this.selected});
 
   factory Expenses.fromMap(Map<String, dynamic> json) => new Expenses(
       id: json["id"],
@@ -23,5 +24,6 @@ class Expenses {
     print('category: $category');
     print('date: $date');
     print('mood: $mood');
+    print('selected: $selected');
   }
 }

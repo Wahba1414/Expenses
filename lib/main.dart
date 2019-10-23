@@ -10,12 +10,14 @@ import 'package:provider/provider.dart';
 import './providers/catgeory_provider.dart';
 import './providers/filters_provider.dart';
 import './providers/expenses_provider.dart';
+import './providers/app_state_provider.dart';
 
 // db.
 import './utilis/db.dart';
 import './models/expenses.dart';
 
 import './models/expenses_arguments.dart';
+import './models/app_state.dart';
 
 void main() => runApp(Top());
 
@@ -27,6 +29,7 @@ class Top extends StatelessWidget {
         ChangeNotifierProvider(builder: (_) => AppCategoryProvider()),
         ChangeNotifierProvider(builder: (_) => AppFiltersProvider()),
         ChangeNotifierProvider(builder: (_) => AppExpensesProvider()),
+        ChangeNotifierProvider(builder: (_) => AppStateProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -128,11 +131,54 @@ class _MyAppState extends State<MyApp> {
     // }
   }
 
+  void removeCabAndReset() async {
+    await Provider.of<AppStateProvider>(context)
+        .updateAppState(new AppState(mutliSelect: false));
+    // Reset
+    Provider.of<AppExpensesProvider>(context).selectAndUnselectAll(false);
+  }
+
   void _selectTap(int index) {
     // print('index: $index');
     setState(() {
       tabIndex = index;
     });
+
+    if (tabIndex != 0) {
+      // Reset
+      removeCabAndReset();
+    }
+  }
+
+  void confirmDeleteMultipleExpenses(BuildContext ctx, Function deleteHandler) {
+    showDialog(
+        context: ctx,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.blueGrey[100],
+            // title: Text('Remove Category' ),
+            content: Text(
+              'Are you sure ?',
+              style: TextStyle(color: Colors.red[300], fontSize: 20),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('No'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                child: Text('Yes'),
+                onPressed: () {
+                  deleteHandler();
+                  Navigator.of(context).pop();
+                },
+                textColor: Colors.red[300],
+              )
+            ],
+          );
+        });
   }
 
   @override
@@ -160,59 +206,146 @@ class _MyAppState extends State<MyApp> {
                 },
                 // color: Colors.red,
               ),
-              IconButton(
-                icon: Icon(
-                  Icons.more_vert,
-                  color: Theme.of(context).primaryColorLight,
-                  size: 24,
-                ),
-                onPressed: () {},
-                // color: Colors.red,
-              ),
+              // IconButton(
+              //   icon: Icon(
+              //     Icons.more_vert,
+              //     color: Theme.of(context).primaryColorLight,
+              //     size: 24,
+              //   ),
+              //   onPressed: () {
+              //     Provider.of<AppStateProvider>(context)
+              //         .updateAppState(new AppState(mutliSelect: true));
+              //   },
+              //   // color: Colors.red,
+              // ),
             ],
           ),
         )
       ],
     );
 
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      appBar: appBar,
-      body: Consumer<AppFiltersProvider>(
-          builder: (context, appFiltersProvider, child) {
-        return Container(
-          // height:
-          //     (MediaQuery.of(context).size.height - appBar.preferredSize.height) * .5,
-          child: Home(
-            appBar.preferredSize.height + kBottomNavigationBarHeight + 6,
-            reload,
-            widget._categories,
-            tabIndex,
+// New AppBar for multi-select. (CAB).
+    final AppBar cab = AppBar(
+      title: Row(
+        children: <Widget>[
+          Container(
+            width: 60,
+            padding: EdgeInsets.only(bottom: 5),
+            child: FlatButton(
+              child: Text(
+                'x',
+                style: TextStyle(
+                    color: Theme.of(context).primaryColorLight,
+                    fontSize: 30,
+                    fontWeight: FontWeight.w200),
+              ),
+              onPressed: removeCabAndReset,
+            ),
           ),
-        );
-      }),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('List'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            title: Text('Statistics'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
-            title: Text('Categories'),
-          )
+          Consumer<AppExpensesProvider>(
+              builder: (context, appExpensesProvider, child) {
+            var selectedCount = appExpensesProvider.selectedExpensesCount;
+            return Container(
+              padding: EdgeInsets.only(bottom: 2),
+              // alignment: Alignment.center,
+              child: Text(
+                'Selected ($selectedCount)',
+                style: TextStyle(
+                  color: Theme.of(context).primaryColorLight,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+            );
+          }),
         ],
-        onTap: _selectTap,
-        selectedItemColor: Theme.of(context).primaryColor,
-        currentIndex: tabIndex,
       ),
-      drawer: Drawer(
-        child: CustomDrawer(),
-      ),
+      actions: <Widget>[
+        Container(
+          padding: EdgeInsets.only(right: 10),
+          child: Consumer<AppExpensesProvider>(
+              builder: (context, appExpensesProvider, child) {
+            var isAllSelected = appExpensesProvider.isAllSelected;
+            var deleteSelected = appExpensesProvider.deleteSelectedItems;
+            return Row(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.center,
+                  child: IconButton(
+                      icon: Icon(
+                        Icons.delete_forever,
+                        color: Theme.of(context).primaryColorLight,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        confirmDeleteMultipleExpenses(context, deleteSelected);
+                      }
+
+                      // color: Colors.red,
+                      ),
+                ),
+                Transform.scale(
+                  alignment: Alignment.centerRight,
+                  scale: 1.2,
+                  child: Checkbox(
+                    activeColor: Theme.of(context).backgroundColor,
+                    value: isAllSelected,
+                    onChanged: (_value) {
+                      Provider.of<AppExpensesProvider>(context)
+                          .selectAndUnselectAll(_value);
+                    },
+                  ),
+                )
+              ],
+            );
+          }),
+        )
+      ],
     );
+
+    return Consumer<AppStateProvider>(
+        builder: (context, appStateProvider, child) {
+      AppState appState = appStateProvider.appState;
+      return Scaffold(
+        resizeToAvoidBottomPadding: false,
+        appBar: (appState.mutliSelect) ? cab : appBar,
+        body: Consumer<AppFiltersProvider>(
+            builder: (context, appFiltersProvider, child) {
+          return Container(
+            // height:
+            //     (MediaQuery.of(context).size.height - appBar.preferredSize.height) * .5,
+            child: Home(
+              appBar.preferredSize.height + kBottomNavigationBarHeight + 6,
+              reload,
+              widget._categories,
+              tabIndex,
+            ),
+          );
+        }),
+        bottomNavigationBar: BottomNavigationBar(
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              title: Text('List'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.star),
+              title: Text('Statistics'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.menu),
+              title: Text('Categories'),
+            )
+          ],
+          onTap: _selectTap,
+          selectedItemColor: Theme.of(context).primaryColor,
+          currentIndex: tabIndex,
+        ),
+        drawer: (appState.mutliSelect)
+            ? null
+            : Drawer(
+                child: CustomDrawer(),
+              ),
+      );
+    });
   }
 }
