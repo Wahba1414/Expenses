@@ -80,155 +80,165 @@ class _DrawerState extends State<CustomDrawer> {
       return Container(
         child: Form(
           key: _formKey,
-          child: ListView(
-            // Important: Remove any padding from the ListView.
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              Container(
-                height: 100,
-                child: DrawerHeader(
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    'Settings',
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColorLight,
-                      fontSize: 22,
+          child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+            return ListView(
+              // Important: Remove any padding from the ListView.
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                Container(
+                  height: 100,
+                  child: DrawerHeader(
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      'Settings',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColorLight,
+                        fontSize: 22,
+                      ),
                     ),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).backgroundColor,
-                  ),
-                ),
-              ),
-              Card(
-                elevation: 10,
-                margin: EdgeInsets.symmetric(
-                  horizontal: 5,
-                  vertical: 10,
-                ),
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        'Filter By Category',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                      DropdownButtonFormField(
-                        onSaved: (value) {},
-                        onChanged: (_newValue) {
-                          setState(() {
-                            filters.category = _newValue;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          labelText: (filters.category == null)
-                              ? 'Category'
-                              : filters.category,
-                        ),
-                        items: (allCategories).map((AppCategoryModel item) {
-                          return DropdownMenuItem<String>(
-                            value: item.title,
-                            child: Text(item.title),
-                          );
-                        }).toList(),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Card(
-                margin: EdgeInsets.symmetric(
-                  horizontal: 5,
-                  vertical: 10,
-                ),
-                elevation: 10,
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        'Filter By Month Number',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                      TextFormField(
-                        initialValue: (filters.month != null)
-                            ? filters.month.toString()
-                            : '',
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value == '') {
-                            return null;
-                          }
-                          var parsedValue = int.parse(value);
-                          if (parsedValue < 1 || parsedValue > 12) {
-                            return 'Month Number is not valid!';
-                          }
-
-                          return null;
-                        },
-                        onSaved: (value) {},
-                        onChanged: (_newValue) {
-                          // print('_newValue:$_newValue');
-                          setState(() {
-                            filters.month =
-                                (_newValue == '') ? null : int.parse(_newValue);
-                            // print('filters.month:${filters.month}');
-                          });
-                        },
-                        decoration: InputDecoration(
-                          hintText: (filters.month == null) ? 'Month' : '',
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                height: 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    RaisedButton(
-                      color: Theme.of(context).primaryColor,
-                      child: Text(
-                        'Reset',
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColorLight,
-                          fontSize: 16,
-                        ),
-                      ),
-                      onPressed: () {
-                        resetFilters(context);
-                      },
-                    ),
-                    RaisedButton(
+                    decoration: BoxDecoration(
                       color: Theme.of(context).backgroundColor,
-                      child: Text(
-                        'Apply',
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColorLight,
-                          fontSize: 16,
-                        ),
-                      ),
-                      onPressed: () {
-                        applyFilters(context);
-                      },
                     ),
-                  ],
+                  ),
                 ),
-              )
-            ],
-          ),
+                Card(
+                  elevation: 10,
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 5,
+                    vertical: 10,
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Filter By Category',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        Container(
+                          width: constraints.maxWidth * .85,
+                          child: DropdownButtonFormField(
+                            onSaved: (value) {},
+                            onChanged: (_newValue) {
+                              setState(() {
+                                filters.category = _newValue;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              labelText: (filters.category == null)
+                                  ? 'Category'
+                                  : filters.category,
+                            ),
+                            items: (allCategories).map((AppCategoryModel item) {
+                              return DropdownMenuItem<String>(
+                                value: item.title,
+                                child: Text(item.title),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Card(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 5,
+                    vertical: 10,
+                  ),
+                  elevation: 10,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Filter By Month Number',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        Container(
+                          width: constraints.maxWidth * .85,
+                          child: TextFormField(
+                            initialValue: (filters.month != null)
+                                ? filters.month.toString()
+                                : '',
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value == null || value == '') {
+                                return null;
+                              }
+                              var parsedValue = int.parse(value);
+                              if (parsedValue < 1 || parsedValue > 12) {
+                                return 'Month Number is not valid!';
+                              }
+
+                              return null;
+                            },
+                            onSaved: (value) {},
+                            onChanged: (_newValue) {
+                              // print('_newValue:$_newValue');
+                              setState(() {
+                                filters.month = (_newValue == '')
+                                    ? null
+                                    : int.parse(_newValue);
+                                // print('filters.month:${filters.month}');
+                              });
+                            },
+                            decoration: InputDecoration(
+                              hintText: (filters.month == null) ? 'Month' : '',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  height: 50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      RaisedButton(
+                        color: Theme.of(context).primaryColor,
+                        child: Text(
+                          'Reset',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorLight,
+                            fontSize: 16,
+                          ),
+                        ),
+                        onPressed: () {
+                          resetFilters(context);
+                        },
+                      ),
+                      RaisedButton(
+                        color: Theme.of(context).backgroundColor,
+                        child: Text(
+                          'Apply',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorLight,
+                            fontSize: 16,
+                          ),
+                        ),
+                        onPressed: () {
+                          applyFilters(context);
+                        },
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            );
+          }),
         ),
       );
     });
