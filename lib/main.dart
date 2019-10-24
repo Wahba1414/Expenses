@@ -184,6 +184,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final AppBar appBar = AppBar(
+      iconTheme: new IconThemeData(color: Theme.of(context).primaryColorLight),
       title: Text(
         'Expenses',
         style: TextStyle(
