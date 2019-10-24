@@ -30,7 +30,9 @@ class _CategoryListState extends State<CategoryList> {
   _addNewCategory(BuildContext context) async {
     // print('titleController:${titleController.text}');
     if (titleController.text != null && titleController.text != '') {
-      AppCategoryModel newItem = AppCategoryModel(title: titleController.text);
+      AppCategoryModel newItem = AppCategoryModel(
+          title:
+              '${titleController.text[0].toUpperCase()}${titleController.text.substring(1)}');
       await Provider.of<AppCategoryProvider>(context, listen: false)
           .addNewCategory(newItem);
 
