@@ -98,20 +98,26 @@ class _HomeState extends State<Home> {
                       height: properHeight,
                       child: (Consumer<AppExpensesProvider>(
                           builder: (context, appExpensesProvider, child) {
-                        // var expensesList = appExpensesProvider.expenses;
-                        return FutureBuilder(
-                            future: appExpensesProvider.futureExpenses,
-                            builder: (context, snapshot) {
-                              // print('snapshot.connectionState:${snapshot.connectionState}');
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Loading();
-                              } else {
-                                return (snapshot.data.length > 0)
-                                    ? ExpensesList(snapshot.data)
-                                    : EmptyList('No transactions added yet!');
-                              }
-                            });
+                        var expensesList = appExpensesProvider.expenses;
+                        if (expensesList.length > 0) {
+                          return (expensesList.length > 0)
+                              ? ExpensesList(expensesList)
+                              : EmptyList('No transactions added yet!');
+                        } else {
+                          return FutureBuilder(
+                              future: appExpensesProvider.futureExpenses,
+                              builder: (context, snapshot) {
+                                // print('snapshot.connectionState:${snapshot.connectionState}');
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Loading();
+                                } else {
+                                  return (snapshot.data.length > 0)
+                                      ? ExpensesList(snapshot.data)
+                                      : EmptyList('No transactions added yet!');
+                                }
+                              });
+                        }
                       })),
                     )
                   : Container(height: properHeight, child: CategoryList())))

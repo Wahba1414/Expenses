@@ -20,6 +20,9 @@ class AppExpensesProvider with ChangeNotifier {
 
   // A little hack for futureBuilder widget.
   Future<List<Expenses>> get futureExpenses async {
+    if (_expenses.length > 0) {
+      return [..._expenses];
+    }
     _expenses = await DBProvider.db.getExpenses(filters);
 
     return [..._expenses];
