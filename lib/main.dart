@@ -266,6 +266,7 @@ class _MyAppState extends State<MyApp> {
           child: Consumer<AppExpensesProvider>(
               builder: (context, appExpensesProvider, child) {
             var isAllSelected = appExpensesProvider.isAllSelected;
+            var selectedCount = appExpensesProvider.selectedExpensesCount;
             var deleteSelected = appExpensesProvider.deleteSelectedItems;
             return Row(
               children: <Widget>[
@@ -278,7 +279,10 @@ class _MyAppState extends State<MyApp> {
                         size: 30,
                       ),
                       onPressed: () {
-                        confirmDeleteMultipleExpenses(context, deleteSelected);
+                        if (selectedCount > 0) {
+                          confirmDeleteMultipleExpenses(
+                              context, deleteSelected);
+                        }
                       }
 
                       // color: Colors.red,
