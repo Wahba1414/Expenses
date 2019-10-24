@@ -102,7 +102,7 @@ class _HomeState extends State<Home> {
                         if (expensesList.length > 0) {
                           return (expensesList.length > 0)
                               ? ExpensesList(expensesList)
-                              : EmptyList('No transactions added yet!');
+                              : EmptyList('No transactions added yet.');
                         } else {
                           return FutureBuilder(
                               future: appExpensesProvider.futureExpenses,
@@ -114,7 +114,7 @@ class _HomeState extends State<Home> {
                                 } else {
                                   return (snapshot.data.length > 0)
                                       ? ExpensesList(snapshot.data)
-                                      : EmptyList('No transactions added yet!');
+                                      : EmptyList('No transactions added yet.');
                                 }
                               });
                         }

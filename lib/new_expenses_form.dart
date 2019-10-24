@@ -88,6 +88,8 @@ class _NewExpensesFormState extends State<NewExpensesForm> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
+        iconTheme:
+            new IconThemeData(color: Theme.of(context).primaryColorLight),
         title: Text('New Expenses',
             style: TextStyle(
               color: Theme.of(context).primaryColorLight,

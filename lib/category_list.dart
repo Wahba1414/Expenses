@@ -154,7 +154,7 @@ class _CategoryListState extends State<CategoryList> {
             Expanded(
               child: (allCategories.length == 0)
                   ? EmptyList(
-                      'No categories added yet!',
+                      'No categories added yet.',
                     )
                   : ListView.builder(
                       itemCount: allCategories.length,

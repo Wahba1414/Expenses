@@ -77,10 +77,12 @@ class DBProvider {
     List<Map<String, dynamic>> res;
 
     if (filters.category == null) {
-      res = await db.query("Expenses",orderBy: "date DESC");
+      res = await db.query("Expenses", orderBy: "date DESC");
     } else {
       res = await db.query("Expenses",
-          where: 'category = ?', whereArgs: [filters.category],orderBy: "date DESC");
+          where: 'category = ?',
+          whereArgs: [filters.category],
+          orderBy: "date DESC");
     }
 
     // temporary.
@@ -92,10 +94,11 @@ class DBProvider {
     // Apply the date filters outside the db queries for now!!
     if (filters.month != null) {
       list = list.where((item) {
-        print('item.date:${item.date}');
-        print('filters.monthEnd:${filters.monthEnd}');
-        print('filters.monthStart:${filters.monthStart}');
-        return (item.date.isBefore(filters.monthEnd) &&
+        // print('item.date:${item.date}');
+        // print('filters.monthEnd:${filters.monthEnd}');
+        // print('filters.monthStart:${filters.monthStart}');
+        return ((item.date.year == filters.year) &&
+            item.date.isBefore(filters.monthEnd) &&
             item.date.isAfter(filters.monthStart));
       }).toList();
     }

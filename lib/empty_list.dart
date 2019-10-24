@@ -11,7 +11,7 @@ class EmptyList extends StatelessWidget {
       child: Text(
         message,
         style: TextStyle(
-          fontSize: 20,
+          fontSize: 24,
         ),
       ),
     );

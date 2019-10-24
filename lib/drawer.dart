@@ -1,6 +1,9 @@
 import 'package:expenses/models/category.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 import './providers/catgeory_provider.dart';
 import './providers/filters_provider.dart';
@@ -30,6 +33,22 @@ class _DrawerState extends State<CustomDrawer> {
       filters = Provider.of<AppFiltersProvider>(context).appFilters;
     });
     super.initState();
+  }
+
+  chooseMonth(BuildContext context) {
+    showMonthPicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(DateTime.now().year - 10, 1),
+      lastDate: DateTime.now(),
+    ).then((pickedDate) {
+      setState(() {
+        if (pickedDate != null) {
+          filters.month = pickedDate.month;
+          filters.year = pickedDate.year;
+        }
+      });
+    });
   }
 
   applyFilters(BuildContext context) async {
@@ -80,7 +99,7 @@ class _DrawerState extends State<CustomDrawer> {
 
       // Add 'Uncategorized' catgeory here.
       allCategories.add(AppCategoryModel(title: 'Uncategorized'));
-      
+
       return Container(
         child: Form(
           key: _formKey,
@@ -133,6 +152,9 @@ class _DrawerState extends State<CustomDrawer> {
                               });
                             },
                             decoration: InputDecoration(
+                              labelStyle: TextStyle(
+                                color: Theme.of(context).primaryColorDark,
+                              ),
                               labelText: (filters.category == null)
                                   ? 'Category'
                                   : filters.category,
@@ -161,44 +183,32 @@ class _DrawerState extends State<CustomDrawer> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'Filter By Month Number',
+                          'Filter By Month',
                           style: TextStyle(
                             fontSize: 16,
                           ),
                         ),
-                        Container(
-                          width: constraints.maxWidth * .85,
-                          child: TextFormField(
-                            initialValue: (filters.month != null)
-                                ? filters.month.toString()
-                                : '',
-                            keyboardType: TextInputType.number,
-                            validator: (value) {
-                              if (value == null || value == '') {
-                                return null;
-                              }
-                              var parsedValue = int.parse(value);
-                              if (parsedValue < 1 || parsedValue > 12) {
-                                return 'Month Number is not valid!';
-                              }
 
-                              return null;
-                            },
-                            onSaved: (value) {},
-                            onChanged: (_newValue) {
-                              // print('_newValue:$_newValue');
-                              setState(() {
-                                filters.month = (_newValue == '')
-                                    ? null
-                                    : int.parse(_newValue);
-                                // print('filters.month:${filters.month}');
-                              });
-                            },
-                            decoration: InputDecoration(
-                              hintText: (filters.month == null) ? 'Month' : '',
+                        // Use month library.
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              (filters.month == null)
+                                  ? 'No Month Selected'
+                                  : '${DateFormat.yMMM().format(DateTime(filters.year, filters.month))}',
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColorDark,
+                              ),
                             ),
-                          ),
-                        ),
+                            IconButton(
+                              icon: Icon(Icons.date_range),
+                              onPressed: () {
+                                chooseMonth(context);
+                              },
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),
