@@ -58,26 +58,31 @@ class _CategoryListState extends State<CategoryList> {
         context: ctx,
         builder: (BuildContext context) {
           return AlertDialog(
-            backgroundColor: Colors.blueGrey[100],
+            backgroundColor: Theme.of(context).primaryColorLight,
             // title: Text('Remove Category' ),
+            title: Text(
+              'Are you sure?',
+              style: TextStyle(color: Colors.black, fontSize: 16),
+            ),
             content: Text(
-              'Are you sure ?',
-              style: TextStyle(color: Colors.red[300], fontSize: 20),
+              'This will remove that category permanently.',
+              style: TextStyle(color: Colors.black, fontSize: 12),
             ),
             actions: <Widget>[
               FlatButton(
-                child: Text('No'),
+                child: Text('CANCEL'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
+                textColor: Theme.of(context).primaryColor,
               ),
               FlatButton(
-                child: Text('Yes'),
+                child: Text('ACCEPT'),
                 onPressed: () {
                   _removeCategory(ctx, removedCategory);
                   Navigator.of(context).pop();
                 },
-                textColor: Colors.red[300],
+                textColor: Theme.of(context).primaryColor,
               )
             ],
           );

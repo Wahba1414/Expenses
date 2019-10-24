@@ -157,24 +157,27 @@ class _MyAppState extends State<MyApp> {
           return AlertDialog(
             backgroundColor: Colors.white,
             // title: Text('Remove Category' ),
+            title: Text('Are you sure?',style: TextStyle(color: Colors.black, fontSize: 16),),
             content: Text(
-              'Are you sure ?',
-              style: TextStyle(color: Colors.red[300], fontSize: 20),
+              'This will remove selected items permanently.',
+              style: TextStyle(color: Colors.black, fontSize: 12),
             ),
+
             actions: <Widget>[
               FlatButton(
-                child: Text('No'),
+                child: Text('CANCEL'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
+                textColor: Theme.of(context).primaryColor,
               ),
               FlatButton(
-                child: Text('Yes'),
+                child: Text('ACCEPT'),
                 onPressed: () {
                   deleteHandler();
                   Navigator.of(context).pop();
                 },
-                textColor: Colors.red[300],
+                textColor: Theme.of(context).primaryColor,
               )
             ],
           );
