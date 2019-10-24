@@ -77,10 +77,10 @@ class DBProvider {
     List<Map<String, dynamic>> res;
 
     if (filters.category == null) {
-      res = await db.query("Expenses");
+      res = await db.query("Expenses",orderBy: "date DESC");
     } else {
       res = await db.query("Expenses",
-          where: 'category = ?', whereArgs: [filters.category]);
+          where: 'category = ?', whereArgs: [filters.category],orderBy: "date DESC");
     }
 
     // temporary.
