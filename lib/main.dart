@@ -155,7 +155,7 @@ class _MyAppState extends State<MyApp> {
         context: ctx,
         builder: (BuildContext context) {
           return AlertDialog(
-            backgroundColor: Colors.blueGrey[100],
+            backgroundColor: Colors.white,
             // title: Text('Remove Category' ),
             content: Text(
               'Are you sure ?',
