@@ -87,7 +87,10 @@ class ExpensesList extends StatelessWidget {
                     },
                     onTap: () {
                       if (appState.mutliSelect) {
-                        listItems[index].selected = !listItems[index].selected;
+                        listItems[index].selected =
+                            (listItems[index].selected == null)
+                                ? true
+                                : !listItems[index].selected;
                         Provider.of<AppExpensesProvider>(context)
                             .updateSelectedFlag(
                                 listItems[index].id, listItems[index].selected);
