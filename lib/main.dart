@@ -199,7 +199,7 @@ class _MyAppState extends State<MyApp> {
                 icon: Icon(
                   Icons.add,
                   color: Theme.of(context).primaryColorLight,
-                  size: 24,
+                  size: 28,
                 ),
                 onPressed: () {
                   _startAddNewExpenses(context);
