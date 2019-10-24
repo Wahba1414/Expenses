@@ -77,6 +77,10 @@ class _DrawerState extends State<CustomDrawer> {
     return Consumer<AppCategoryProvider>(
         builder: (context, appCategoryProvider, child) {
       var allCategories = appCategoryProvider.appCategories;
+
+      // Add 'Uncategorized' catgeory here.
+      allCategories.add(AppCategoryModel(title: 'Uncategorized'));
+      
       return Container(
         child: Form(
           key: _formKey,
