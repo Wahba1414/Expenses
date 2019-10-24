@@ -127,6 +127,9 @@ class _CategoryListState extends State<CategoryList> {
                     controller: titleController,
                     focusNode: titleFocus,
                     decoration: InputDecoration(
+                      // hintStyle: TextStyle(
+                      //   color: Theme.of(context).primaryColorDark,
+                      // ),
                       hintText: 'New Category Name',
                     ),
                   )),
