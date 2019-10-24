@@ -199,6 +199,7 @@ class _DrawerState extends State<CustomDrawer> {
                                   : '${DateFormat.yMMM().format(DateTime(filters.year, filters.month))}',
                               style: TextStyle(
                                 color: Theme.of(context).primaryColorDark,
+                                fontSize: 15,
                               ),
                             ),
                             IconButton(
