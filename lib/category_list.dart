@@ -28,11 +28,11 @@ class _CategoryListState extends State<CategoryList> {
   FocusNode titleFocus = FocusNode();
 
   _addNewCategory(BuildContext context) async {
-    // print('titleController:${titleController.text}');
     if (titleController.text != null && titleController.text != '') {
       AppCategoryModel newItem = AppCategoryModel(
           title:
               '${titleController.text[0].toUpperCase()}${titleController.text.substring(1)}');
+
       await Provider.of<AppCategoryProvider>(context, listen: false)
           .addNewCategory(newItem);
 
@@ -52,6 +52,7 @@ class _CategoryListState extends State<CategoryList> {
     // Refresh.
     await Provider.of<AppCategoryProvider>(context)
         .removeCategory(removedCategory);
+
     await Provider.of<AppExpensesProvider>(context).refresh();
   }
 
@@ -62,24 +63,24 @@ class _CategoryListState extends State<CategoryList> {
           return AlertDialog(
             backgroundColor: Theme.of(context).primaryColorLight,
             // title: Text('Remove Category' ),
-            title: Text(
+            title: const Text(
               'Are you sure?',
               style: TextStyle(color: Colors.black, fontSize: 16),
             ),
-            content: Text(
+            content: const Text(
               'This will remove that category permanently.',
               style: TextStyle(color: Colors.black, fontSize: 12),
             ),
             actions: <Widget>[
               FlatButton(
-                child: Text('CANCEL'),
+                child: const Text('CANCEL'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
                 textColor: Theme.of(context).primaryColor,
               ),
               FlatButton(
-                child: Text('ACCEPT'),
+                child: const Text('ACCEPT'),
                 onPressed: () {
                   _removeCategory(ctx, removedCategory);
                   Navigator.of(context).pop();
@@ -92,19 +93,9 @@ class _CategoryListState extends State<CategoryList> {
   }
 
   @override
-  void didChangeDependencies() {
-    // Provider.of<AppCategoryProvider>(context).init();
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Container(
-        // providers: [
-        //   ChangeNotifierProvider(builder: (_) => AppCategoryProvider()),
-        // ],
-        child: Consumer<AppCategoryProvider>(
-            builder: (context, appCategoryProvider, child) {
+    return Container(child: Consumer<AppCategoryProvider>(
+        builder: (context, appCategoryProvider, child) {
       var allCategories = appCategoryProvider.appCategories;
 
       return Container(
@@ -127,9 +118,6 @@ class _CategoryListState extends State<CategoryList> {
                     controller: titleController,
                     focusNode: titleFocus,
                     decoration: InputDecoration(
-                      // hintStyle: TextStyle(
-                      //   color: Theme.of(context).primaryColorDark,
-                      // ),
                       hintText: 'New Category Name',
                     ),
                   )),
@@ -156,9 +144,9 @@ class _CategoryListState extends State<CategoryList> {
             ),
             Expanded(
               child: (allCategories.length == 0)
-                  ? EmptyList(
-                      'No categories added yet.',
-                    )
+                  ? (const EmptyList(
+                      'Categories list is empty.',
+                    ))
                   : ListView.builder(
                       itemCount: allCategories.length,
                       itemBuilder: (context, index) {
@@ -171,10 +159,8 @@ class _CategoryListState extends State<CategoryList> {
                           child: Row(
                             children: <Widget>[
                               CircleAvatar(
-                                // backgroundColor: Theme.of(context).primaryColor,
                                 backgroundColor: _getBackGroundColor(
                                     context, allCategories[index].color),
-                                // foregroundColor: Theme.of(context).accentColor,
                                 radius: 20,
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -193,7 +179,7 @@ class _CategoryListState extends State<CategoryList> {
                               ),
                               IconButton(
                                 padding: EdgeInsets.all(0),
-                                icon: Icon(Icons.delete),
+                                icon: const Icon(Icons.delete),
                                 color: Colors.red,
                                 onPressed: () {
                                   startremoveCategoryDialog(

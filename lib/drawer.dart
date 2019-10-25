@@ -21,9 +21,6 @@ class _DrawerState extends State<CustomDrawer> {
   // Inputs controller.
   // Form Key.
   final _formKey = GlobalKey<FormState>();
-  final months = List<int>.generate(12, (int index) {
-    return index + 1;
-  });
 
   AppFilters filters;
 
@@ -62,6 +59,7 @@ class _DrawerState extends State<CustomDrawer> {
       // Update providers.
       var updatedFilters =
           await Provider.of<AppFiltersProvider>(context).updateFilters(filters);
+
       await Provider.of<AppExpensesProvider>(context)
           .filterExpenses(updatedFilters);
 
@@ -93,6 +91,7 @@ class _DrawerState extends State<CustomDrawer> {
       filters = Provider.of<AppFiltersProvider>(context).appFilters;
       isFirstTime = false;
     }
+
     return Consumer<AppCategoryProvider>(
         builder: (context, appCategoryProvider, child) {
       var allCategories = appCategoryProvider.appCategories;
@@ -136,7 +135,7 @@ class _DrawerState extends State<CustomDrawer> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
+                        const Text(
                           'Filter By Category',
                           style: TextStyle(
                             fontSize: 16,
@@ -182,7 +181,7 @@ class _DrawerState extends State<CustomDrawer> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
+                        const Text(
                           'Filter By Month',
                           style: TextStyle(
                             fontSize: 16,
@@ -203,7 +202,7 @@ class _DrawerState extends State<CustomDrawer> {
                               ),
                             ),
                             IconButton(
-                              icon: Icon(Icons.date_range),
+                              icon: const Icon(Icons.date_range),
                               onPressed: () {
                                 chooseMonth(context);
                               },

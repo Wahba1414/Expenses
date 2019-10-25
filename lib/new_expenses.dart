@@ -39,11 +39,11 @@ class _NewExpensesState extends State<NewExpenses> {
         child: Column(
           children: <Widget>[
             TextField(
-              decoration: InputDecoration(hintText: 'Title'),
+              decoration: const InputDecoration(hintText: 'Title'),
               controller: titleController,
             ),
             TextField(
-              decoration: InputDecoration(hintText: 'Amount'),
+              decoration: const InputDecoration(hintText: 'Amount'),
               keyboardType: TextInputType.number,
               controller: amountController,
             ),
@@ -73,13 +73,13 @@ class _NewExpensesState extends State<NewExpenses> {
                     ? 'No date is chosen'
                     : (DateFormat.yMMMMd().format(selectedDate))),
                 FlatButton(
-                  child: Text('Pick up a date'),
+                  child: const Text('Pick up a date'),
                   onPressed: _handleAsyncDatePicker,
                 )
               ],
             ),
             RaisedButton(
-              child: Text('Add'),
+              child: const Text('Add'),
               onPressed: () {
                 if ((titleController.text != null) &&
                     (amountController.text != null) &&
@@ -92,14 +92,6 @@ class _NewExpensesState extends State<NewExpenses> {
                     date: selectedDate,
                     category: selectedCategory,
                   );
-
-                  // Expenses newItem = {
-                  //   'title': titleController.text,
-                  //   'amount': amountController.text,
-                  //   'category': selectedCategory,
-                  //   'date': selectedDate,
-                  //   'id': new Uuid().v1(),
-                  // };
 
                   widget.addNewExpenses(newItem);
 

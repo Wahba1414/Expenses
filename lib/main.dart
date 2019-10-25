@@ -13,8 +13,8 @@ import './providers/expenses_provider.dart';
 import './providers/app_state_provider.dart';
 
 // db.
-import './utilis/db.dart';
-import './models/expenses.dart';
+// import './utilis/db.dart';
+// import './models/expenses.dart';
 
 import './models/expenses_arguments.dart';
 import './models/app_state.dart';
@@ -54,11 +54,8 @@ class Top extends StatelessWidget {
           ),
           buttonTheme: ButtonThemeData(
             textTheme: ButtonTextTheme.normal,
-
             buttonColor: Colors.blueAccent[100],
-            // colorScheme: ColorScheme.dark(),
           ),
-          // backgroundColor: Colors.cyan[400],
           backgroundColor: Colors.purple[300],
           // backgroundColor: Colors.pink[300],
           // dialogBackgroundColor: Colors.blue[400]
@@ -72,8 +69,6 @@ class Top extends StatelessWidget {
         }),
         // routes.
         routes: {
-          // When navigating to the "/" route, build the FirstScreen widget.
-          // '/': (context) => MyApp(),
           // Category list.
           CategoryList.routeUrl: (context) => CategoryList(),
           NewExpensesForm.routeUrl: (context) => NewExpensesForm(),
@@ -96,19 +91,8 @@ class _MyAppState extends State<MyApp> {
   // holds the tab index.
   int tabIndex = 0;
 
-  void reload() {
-    setState(() {});
-  }
-
   // Function opens a bottom modal.
   void _startAddNewExpenses(context) {
-    // showModalBottomSheet(
-    //     context: context,
-    //     builder: (builder) {
-    //       // return NewExpenses(_selectDate, widget._categories, addNewExpenses);
-    //       return NewExpensesForm(
-    //           _selectDate, widget._categories, addNewExpenses);
-    //     });
     Navigator.of(context).pushNamed(NewExpensesForm.routeUrl,
         arguments: ExpensesArguments(_selectDate, widget._categories));
   }
@@ -120,15 +104,6 @@ class _MyAppState extends State<MyApp> {
         initialDate: new DateTime.now(),
         firstDate: DateTime(DateTime.now().year, 1),
         lastDate: new DateTime.now());
-  }
-
-  Future<bool> addNewExpenses(Expenses newItem) async {
-    // if (newItem.title && newItem.amount && newItem.category && newItem.date) {
-    // widget.listItems.add(newItem);
-    await DBProvider.db.newExpenses(newItem);
-    reload();
-    return true;
-    // }
   }
 
   void removeCabAndReset() async {
@@ -157,22 +132,25 @@ class _MyAppState extends State<MyApp> {
           return AlertDialog(
             backgroundColor: Colors.white,
             // title: Text('Remove Category' ),
-            title: Text('Are you sure?',style: TextStyle(color: Colors.black, fontSize: 16),),
-            content: Text(
+            title: const Text(
+              'Are you sure?',
+              style: TextStyle(color: Colors.black, fontSize: 16),
+            ),
+            content: const Text(
               'This will remove selected items permanently.',
               style: TextStyle(color: Colors.black, fontSize: 12),
             ),
 
             actions: <Widget>[
               FlatButton(
-                child: Text('CANCEL'),
+                child: const Text('CANCEL'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
                 textColor: Theme.of(context).primaryColor,
               ),
               FlatButton(
-                child: Text('ACCEPT'),
+                child: const Text('ACCEPT'),
                 onPressed: () {
                   deleteHandler();
                   Navigator.of(context).pop();
@@ -210,18 +188,6 @@ class _MyAppState extends State<MyApp> {
                 },
                 // color: Colors.red,
               ),
-              // IconButton(
-              //   icon: Icon(
-              //     Icons.more_vert,
-              //     color: Theme.of(context).primaryColorLight,
-              //     size: 24,
-              //   ),
-              //   onPressed: () {
-              //     Provider.of<AppStateProvider>(context)
-              //         .updateAppState(new AppState(mutliSelect: true));
-              //   },
-              //   // color: Colors.red,
-              // ),
             ],
           ),
         )
@@ -319,29 +285,26 @@ class _MyAppState extends State<MyApp> {
         body: Consumer<AppFiltersProvider>(
             builder: (context, appFiltersProvider, child) {
           return Container(
-            // height:
-            //     (MediaQuery.of(context).size.height - appBar.preferredSize.height) * .5,
             child: Home(
               appBar.preferredSize.height + kBottomNavigationBarHeight + 6,
-              reload,
               widget._categories,
               tabIndex,
             ),
           );
         }),
         bottomNavigationBar: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('List'),
+          items: const <BottomNavigationBarItem>[
+            const BottomNavigationBarItem(
+              icon: const Icon(Icons.home),
+              title: const Text('List'),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.star),
-              title: Text('Statistics'),
+            const BottomNavigationBarItem(
+              icon: const Icon(Icons.star),
+              title: const Text('Statistics'),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.menu),
-              title: Text('Categories'),
+            const BottomNavigationBarItem(
+              icon: const Icon(Icons.menu),
+              title: const Text('Categories'),
             )
           ],
           onTap: _selectTap,

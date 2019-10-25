@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class EmptyList extends StatelessWidget {
   final String message;
 
-  EmptyList(this.message);
+  const EmptyList(this.message);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class EmptyList extends StatelessWidget {
       child: Text(
         message,
         style: TextStyle(
-          fontSize: 24,
+          fontSize: 18,
         ),
       ),
     );

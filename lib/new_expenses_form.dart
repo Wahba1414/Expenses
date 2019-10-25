@@ -12,13 +12,7 @@ import './models/expenses_arguments.dart';
 class NewExpensesForm extends StatefulWidget {
   static const routeUrl = '/newExpenses';
 
-  // final selectDate;
-  // final _categories;
-  // final addNewExpenses;
-
   NewExpensesForm();
-
-  // NewExpensesForm();
 
   @override
   _NewExpensesFormState createState() => _NewExpensesFormState();
@@ -41,8 +35,6 @@ class _NewExpensesFormState extends State<NewExpensesForm> {
 
   _handleAsyncDatePicker() {
     args.selectDate().then((pickedDate) {
-      // print('pickedDate');
-      // print(pickedDate);
       setState(() {
         if (pickedDate != null) {
           editedExpenses.date = pickedDate;
@@ -53,23 +45,14 @@ class _NewExpensesFormState extends State<NewExpensesForm> {
 
   _submit(BuildContext context) async {
     final isValid = _formKey.currentState.validate();
-    // print('isValid: $isValid');
     if (isValid) {
-      // print('here');
       _formKey.currentState.save();
-      // editedExpenses.log();
       editedExpenses.id = new Uuid().v1();
       await Provider.of<AppExpensesProvider>(context)
           .newExpenses(editedExpenses);
 
       Navigator.of(context).pop();
     }
-  }
-
-  @override
-  void initState() {
-    Future.delayed(Duration(seconds: 0), () {});
-    super.initState();
   }
 
   @override
@@ -96,8 +79,6 @@ class _NewExpensesFormState extends State<NewExpensesForm> {
             )),
       ),
       body: Container(
-        // margin:
-        //     EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Form(
           key: _formKey,
           child: Column(
@@ -117,7 +98,7 @@ class _NewExpensesFormState extends State<NewExpensesForm> {
                       onSaved: (value) {
                         editedExpenses.title = value;
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Title',
                       ),
                       focusNode: _titleFoucs,
@@ -137,7 +118,7 @@ class _NewExpensesFormState extends State<NewExpensesForm> {
                       onSaved: (value) {
                         editedExpenses.amount = value;
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Amount',
                       ),
                       keyboardType: TextInputType.number,
@@ -149,18 +130,10 @@ class _NewExpensesFormState extends State<NewExpensesForm> {
                     ),
                     // Category
                     DropdownButtonFormField(
-                      // validator: (value) {
-                      //   if (value == null) {
-                      //     return 'Category is empty!';
-                      //   }
-                      //   return null;
-                      // },
                       onSaved: (value) {
                         editedExpenses.category = value ?? 'Uncategorized';
                       },
                       onChanged: (_newValue) {
-                        // print('_newvalue');
-                        // print(_newValue);
                         setState(() {
                           editedExpenses.category = _newValue;
                         });
@@ -209,13 +182,13 @@ class _NewExpensesFormState extends State<NewExpensesForm> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text('Date: '),
+                        const Text('Date: '),
                         Text((editedExpenses.date == null)
                             ? 'No date is chosen'
                             : (DateFormat.yMMMMd()
                                 .format(editedExpenses.date))),
                         IconButton(
-                          icon: Icon(Icons.edit),
+                          icon: const Icon(Icons.edit),
                           onPressed: _handleAsyncDatePicker,
                         )
                       ],

@@ -129,15 +129,6 @@ class AppExpensesProvider with ChangeNotifier {
   }
 
   deleteSelectedItems() async {
-    // List<String> ids = _expenses
-    //     .where((item) {
-    //       return item.selected;
-    //     })
-    //     .toList()
-    //     .map((item) {
-    //       return item.id;
-    //     })
-    //     .toList();
     List<String> ids = [];
 
     _expenses.forEach((item) {

@@ -31,8 +31,6 @@ class AppFiltersProvider with ChangeNotifier {
     // Year.
     _filters.year = newData.year;
 
-    // print('Fliters after update');
-    // _filters.log();
     // Notify listerners.
     notifyListeners();
 

@@ -41,25 +41,18 @@ class AppCategoryProvider with ChangeNotifier {
   ];
 
   Color getColorCode(String colorName) {
-    // print('colorname:$colorName');
-
     return (colors.firstWhere((item) {
       return item['name'] == colorName;
     })['value']);
   }
 
   Color getColorCodeFromCategory(String categoryName) {
-    // print('categoryName:$categoryName');
-    // print('categoryName:${_categories.length}');
-
     if (categoryName == 'Uncategorized') {
       return Colors.red[300]; //Default color.
     } else {
       var selectedCategory = _categories.firstWhere((item) {
         return item.title == categoryName;
       });
-
-      // print('selectedCategory$selectedCategory');
 
       if (selectedCategory != null) {
         return (colors.firstWhere((item) {
@@ -84,9 +77,6 @@ class AppCategoryProvider with ChangeNotifier {
   }
 
   addNewCategory(AppCategoryModel newItem) {
-    // print('newItem');
-    // print(newItem);
-
     if (newItem.title == null) {
       return;
     }

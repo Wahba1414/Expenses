@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:provider/provider.dart';
 
-// import './models/expenses.dart';
 import './providers/catgeory_provider.dart';
 import './providers/app_state_provider.dart';
 
@@ -63,7 +62,7 @@ class ExpensesList extends StatelessWidget {
                       seconds: 5,
                     ),
                     backgroundColor: Theme.of(context).backgroundColor,
-                    content: Text("Item removed"),
+                    content: const Text("Item removed"),
                     action: SnackBarAction(
                       label: 'Undo',
                       textColor: Theme.of(context).primaryColorLight,
