@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:provider/provider.dart';
 
-import './empty_list.dart';
 import './models/expenses.dart';
 import './providers/catgeory_provider.dart';
 
