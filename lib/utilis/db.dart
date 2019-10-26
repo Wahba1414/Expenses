@@ -115,7 +115,12 @@ class DBProvider {
 
   deleteMultipleExpenses(List<String> ids) async {
     final db = await database;
-    return db.delete("Expenses", where: "id = ?", whereArgs: ids);
+    // return db.delete("Expenses", where: "id IN (?,?)", whereArgs: ids);
+    ids.forEach((id) async {
+      await db.delete("Expenses", where: "id = ?", whereArgs: [id]);
+    });
+
+    return;
   }
 
   deleteAll() async {

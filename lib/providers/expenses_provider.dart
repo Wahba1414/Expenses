@@ -132,7 +132,7 @@ class AppExpensesProvider with ChangeNotifier {
     List<String> ids = [];
 
     _expenses.forEach((item) {
-      if (item.selected) {
+      if (item.selected == true) {
         ids.add(item.id);
       }
     });
