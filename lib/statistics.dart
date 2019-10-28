@@ -156,8 +156,7 @@ class _StatisticsState extends State<Statistics> {
                                   ),
                                   child: FittedBox(
                                       child: Text(
-                                    formatMoney(
-                                        statistics[updatedCategories[index]]),
+                                    '${formatMoney(statistics[updatedCategories[index]])} ${(statistics[updatedCategories[index]] != 0) ? ("(~" + (statistics[updatedCategories[index]] / totalExpenses * 100).toStringAsFixed(0) + "%)") : ""}',
                                     style: TextStyle(
                                       color: catgeoryColor,
                                       fontSize: 16,
