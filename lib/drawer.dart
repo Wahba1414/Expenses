@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import 'package:month_picker_dialog/month_picker_dialog.dart';
+// import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 import './providers/catgeory_provider.dart';
 import './providers/filters_provider.dart';
@@ -32,17 +32,21 @@ class _DrawerState extends State<CustomDrawer> {
     super.initState();
   }
 
-  chooseMonth(BuildContext context) {
-    showMonthPicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(DateTime.now().year - 10, 1),
-      lastDate: DateTime.now(),
-    ).then((pickedDate) {
+  chooseDate(BuildContext context, String dateLimit) {
+    showDatePicker(
+            context: context,
+            initialDate: new DateTime.now(),
+            firstDate: DateTime(DateTime.now().year, 1),
+            lastDate: new DateTime.now())
+        .then((pickedDate) {
       setState(() {
         if (pickedDate != null) {
-          filters.month = pickedDate.month;
-          filters.year = pickedDate.year;
+          if (dateLimit == 'fromDate') {
+            filters.fromDate = pickedDate;
+          } else {
+            filters.toDate = DateTime(
+                pickedDate.year, pickedDate.month, pickedDate.day, 23, 59, 59);
+          }
         }
       });
     });
@@ -182,7 +186,7 @@ class _DrawerState extends State<CustomDrawer> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         const Text(
-                          'Filter By Month',
+                          'Filter By Date',
                           style: TextStyle(
                             fontSize: 16,
                           ),
@@ -193,18 +197,50 @@ class _DrawerState extends State<CustomDrawer> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              (filters.month == null)
-                                  ? 'No Month Selected'
-                                  : '${DateFormat.yMMM().format(DateTime(filters.year, filters.month))}',
+                              'From:',
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              (filters.fromDate == null)
+                                  ? 'No Date Selected'
+                                  : '${DateFormat.yMMMd().format(filters.fromDate)}',
                               style: TextStyle(
                                 color: Theme.of(context).primaryColorDark,
-                                fontSize: 15,
+                                fontSize: 14,
                               ),
                             ),
                             IconButton(
                               icon: const Icon(Icons.date_range),
                               onPressed: () {
-                                chooseMonth(context);
+                                chooseDate(context, 'fromDate');
+                              },
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              'To:    ',
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              (filters.toDate == null)
+                                  ? 'No Date Selected'
+                                  : '${DateFormat.yMMMd().format(filters.toDate)}',
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColorDark,
+                                fontSize: 14,
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.date_range),
+                              onPressed: () {
+                                chooseDate(context, 'toDate');
                               },
                             ),
                           ],

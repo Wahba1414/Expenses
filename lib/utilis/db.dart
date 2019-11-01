@@ -92,14 +92,21 @@ class DBProvider {
         res.isNotEmpty ? res.map((c) => Expenses.fromMap(c)).toList() : [];
 
     // Apply the date filters outside the db queries for now!!
-    if (filters.month != null) {
+    if (filters.fromDate != null || filters.toDate != null) {
       list = list.where((item) {
         // print('item.date:${item.date}');
         // print('filters.monthEnd:${filters.monthEnd}');
         // print('filters.monthStart:${filters.monthStart}');
-        return ((item.date.year == filters.year) &&
-            item.date.isBefore(filters.monthEnd) &&
-            item.date.isAfter(filters.monthStart));
+        // return ((item.date.year == filters.year) &&
+        //     item.date.isBefore(filters.monthEnd) &&
+        //     item.date.isAfter(filters.monthStart));
+
+        // print('filters.fromDate: ${filters.fromDate}');
+        // print('filters.toDate: ${filters.toDate}');
+
+        return (((filters.fromDate == null) ||
+                (item.date.isAfter(filters.fromDate))) &&
+            ((filters.toDate == null) || (item.date.isBefore(filters.toDate))));
       }).toList();
     }
 

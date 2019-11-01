@@ -7,8 +7,13 @@ class AppFilters {
   DateTime monthStart;
   DateTime monthEnd;
 
+  // New date filters
+  DateTime fromDate;
+  DateTime toDate;
+
+
   AppFilters(
-      {this.category, this.month, this.year, this.monthStart, this.monthEnd});
+      {this.category, this.month, this.year, this.monthStart, this.monthEnd, this.fromDate, this.toDate});
 
   factory AppFilters.copy(AppFilters copy) {
     return new AppFilters(
@@ -17,6 +22,8 @@ class AppFilters {
       year: copy.year,
       monthStart: copy.monthStart,
       monthEnd: copy.monthEnd,
+      fromDate: copy.fromDate,
+      toDate: copy.toDate
     );
   }
 
@@ -27,6 +34,9 @@ class AppFilters {
     print('month:$month');
     print('monthStart:$monthStart');
     print('monthEnd:$monthEnd');
+    print('fromDate:$fromDate');
+    print('toDate:$toDate');
+
   }
 
 }
